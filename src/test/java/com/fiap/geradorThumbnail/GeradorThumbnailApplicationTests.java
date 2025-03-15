@@ -1,4 +1,4 @@
-package com.geradorthumbnail.geradorThumbnail;
+package com.fiap.geradorThumbnail;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

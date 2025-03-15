@@ -1,4 +1,4 @@
-package com.geradorthumbnail.geradorThumbnail;
+package com.fiap.geradorThumbnail;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
