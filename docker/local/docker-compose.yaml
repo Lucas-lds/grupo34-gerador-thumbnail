@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  sqs:
+    image: softwaremill/elasticmq
+    container_name: local-sqs
+    ports:
+      - "9324:9324"
+    volumes:
+      - ./elasticmq.conf:/opt/elasticmq.conf
+    environment:
+      - JAVA_OPTS=-Dconfig.file=/opt/elasticmq.conf
