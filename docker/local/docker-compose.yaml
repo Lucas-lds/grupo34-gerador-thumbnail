@@ -10,3 +10,14 @@ services:
       - ./elasticmq.conf:/opt/elasticmq.conf
     environment:
       - JAVA_OPTS=-Dconfig.file=/opt/elasticmq.conf
+
+  localstack:
+    image: localstack/localstack:latest
+    container_name: local-s3
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3
+      - DEBUG=1
+    volumes:
+      - ./localstack/init:/docker-entrypoint-initaws.d

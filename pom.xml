@@ -25,22 +25,34 @@
 
 	<dependencies>
 
-		<!-- Spring Boot Starter Web -->
+		<!-- Spring Boot Web -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-		<!-- Spring Boot Starter -->
+		<!-- Spring Boot Core -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 
-		<!-- Spring Cloud AWS Starter SQS (com suporte a @SqsListener) -->
+		<!-- Spring Cloud AWS SQS (com exclusão para evitar conflitos com SDK v2) -->
 		<dependency>
 			<groupId>io.awspring.cloud</groupId>
 			<artifactId>spring-cloud-aws-starter-sqs</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>software.amazon.awssdk</groupId>
+					<artifactId>bom</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- AWS SDK v2 - S3 -->
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>s3</artifactId>
 		</dependency>
 
 		<!-- Testes -->
@@ -52,9 +64,9 @@
 
 	</dependencies>
 
+	<!-- Gerenciador de versões do Spring Cloud AWS (com suporte ao SDK v2) -->
 	<dependencyManagement>
 		<dependencies>
-			<!-- Spring Cloud AWS BOM -->
 			<dependency>
 				<groupId>io.awspring.cloud</groupId>
 				<artifactId>spring-cloud-aws-dependencies</artifactId>
