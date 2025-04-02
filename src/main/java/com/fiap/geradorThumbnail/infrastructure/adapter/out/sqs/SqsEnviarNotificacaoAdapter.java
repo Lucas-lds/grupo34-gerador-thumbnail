@@ -24,7 +24,7 @@ public class SqsEnviarNotificacaoAdapter implements EnviarNotificacaoVideo {
         SendMessageRequest request = SendMessageRequest.builder().queueUrl(queueUrl).messageBody(mensagem).build();
 
         sqsAsyncClient.sendMessage(request).thenAccept(response ->
-                System.out.println("📤 Mensagem enviada com sucesso! MessageId: " + response.messageId()));
+                System.out.println("📤 Mensagem enviada com sucesso para o SQS! MessageId: " + response.messageId()));
 
     }
 }

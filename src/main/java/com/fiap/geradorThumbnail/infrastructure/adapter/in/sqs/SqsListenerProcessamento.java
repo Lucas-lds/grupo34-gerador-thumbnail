@@ -8,7 +8,7 @@ public class SqsListenerProcessamento {
 
     @SqsListener("sqs-solicitacao-processamento")
     public void listen(String messageBody) {
-        System.out.println("📥 Mensagem recebida: " + messageBody);
+        System.out.println("📥 Mensagem recebida com sucesso: " + messageBody);
 
         // TODO: adicionar lógica posteriormente
     }
