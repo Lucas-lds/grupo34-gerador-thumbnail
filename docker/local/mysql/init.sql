@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS processamentos (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id_cliente VARCHAR(64) NOT NULL,
+    nome_video VARCHAR(255) NOT NULL,
+    status_processamento VARCHAR(32) NOT NULL,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

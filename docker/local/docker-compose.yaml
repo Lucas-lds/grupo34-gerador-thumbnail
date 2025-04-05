@@ -1,6 +1,28 @@
-version: '3.8'
-
 services:
+  mysql:
+    image: mysql:8.0
+    container_name: local-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: processamento_videos
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: dev123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-network
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
   sqs:
     image: softwaremill/elasticmq
     container_name: local-sqs
@@ -10,6 +32,8 @@ services:
       - ./elasticmq.conf:/opt/elasticmq.conf
     environment:
       - JAVA_OPTS=-Dconfig.file=/opt/elasticmq.conf
+    networks:
+      - app-network
 
   localstack:
     image: localstack/localstack:latest
@@ -21,3 +45,12 @@ services:
       - DEBUG=1
     volumes:
       - ./localstack/init:/docker-entrypoint-initaws.d
+    networks:
+      - app-network
+
+volumes:
+  mysql_data:
+
+networks:
+  app-network:
+    driver: bridge
