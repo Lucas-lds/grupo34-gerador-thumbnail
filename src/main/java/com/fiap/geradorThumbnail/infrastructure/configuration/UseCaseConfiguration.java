@@ -1,6 +1,6 @@
 package com.fiap.geradorThumbnail.infrastructure.configuration;
 
-import com.fiap.geradorThumbnail.application.port.in.SalvarVideoUseCase;
+import com.fiap.geradorThumbnail.core.usecases.SalvarVideoUseCase;
 import com.fiap.geradorThumbnail.application.port.out.ArmazenarVideo;
 import com.fiap.geradorThumbnail.application.port.out.EnviarNotificacaoVideo;
 import com.fiap.geradorThumbnail.application.service.SalvarVideoService;

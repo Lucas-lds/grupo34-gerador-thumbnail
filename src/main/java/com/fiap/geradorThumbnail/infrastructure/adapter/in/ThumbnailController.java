@@ -1,6 +1,7 @@
 package com.fiap.geradorThumbnail.infrastructure.adapter.in;
 
-import com.fiap.geradorThumbnail.application.port.in.SalvarVideoUseCase;
+import com.fiap.geradorThumbnail.core.usecases.SalvarVideoUseCase;
+import com.fiap.geradorThumbnail.core.domain.enums.FormatoVideo;
 import com.fiap.geradorThumbnail.infrastructure.adapter.in.request.VideoRequest;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +20,10 @@ public class ThumbnailController {
     }
 
     @PostMapping(value = "/enviar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void enviarMensagem(@RequestPart("video") MultipartFile video, @RequestPart("nomeVideo") String nomeVideo) throws IOException {
-        VideoRequest videoRequest = new VideoRequest(video, nomeVideo);
+    public void enviarMensagem(@RequestPart("video") MultipartFile video,
+                               @RequestPart("formatoVideo") String formatoVideo,
+                               @RequestPart("idUsuario") String idUsuario) throws IOException {
+        VideoRequest videoRequest = new VideoRequest(video, FormatoVideo.fromString(formatoVideo), idUsuario, video.getOriginalFilename());
         salvarVideoUseCase.executar(videoRequest.toDomain());
     }
 }

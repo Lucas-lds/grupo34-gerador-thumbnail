@@ -1,4 +1,4 @@
-package com.fiap.geradorThumbnail.application.port.in;
+package com.fiap.geradorThumbnail.core.usecases;
 
 import com.fiap.geradorThumbnail.core.domain.Video;
 
