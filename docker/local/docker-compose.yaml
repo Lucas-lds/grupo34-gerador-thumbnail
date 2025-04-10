@@ -32,10 +32,15 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}?useSSL=true&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
       SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
-      AWS_REGION: us-east-2
-      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY:test}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_KEY:test}
       AWS_ENDPOINT: http://localstack:4566
+      DB_USERNAME: dev
+      DB_PASSWORD: dev123
+      COGNITO_POOL_ID: us-east-2_00226X2Nq
+      COGNITO_CLIENT_ID: 1faipebfk8aaaeos1cjvhmoa7d
+      API_GATEWAY_URL: https://fgpb42jb56.execute-api.us-east-2.amazonaws.com/prod
     networks:
       - app-network
     healthcheck:
@@ -75,8 +80,8 @@ services:
       - DEBUG=1
       - AWS_REGION=us-east-2
       - DATA_DIR=/tmp/localstack
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY:test}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_KEY:test}
     volumes:
       - ./localstack/init:/docker-entrypoint-initaws.d
     networks:

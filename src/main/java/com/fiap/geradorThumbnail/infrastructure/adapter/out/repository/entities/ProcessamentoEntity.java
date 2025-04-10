@@ -23,23 +23,80 @@ public class ProcessamentoEntity {
     @Column(name = "status_processamento", nullable = false, length = 32)
     private StatusProcessamento status;
 
+    @Column(name = "caminho_frames", nullable = false)
+    private String caminhoFrames;
+
+    @Column(name = "caminho_video_original", nullable = false)
+    private String caminhoVideoOriginal;
+
+    @Column(name = "caminho_zip", nullable = false)
+    private String caminhoZip;
+
+    @Column(name = "quantidade_frames", nullable = false)
+    private Integer quantidadeFrames;
+
     @Column(name = "criado_em", updatable = false, insertable = false)
     private LocalDateTime criadoEm;
 
-    public ProcessamentoEntity(Long id, String idCliente, String nomeVideo, StatusProcessamento status, LocalDateTime criadoEm) {
+    public ProcessamentoEntity(Long id, String idCliente, String nomeVideo, StatusProcessamento status, 
+                             String caminhoFrames, String caminhoVideoOriginal, String caminhoZip,
+                             Integer quantidadeFrames, LocalDateTime criadoEm) {
         this.id = id;
         this.idCliente = idCliente;
         this.nomeVideo = nomeVideo;
         this.status = status;
+        this.caminhoFrames = caminhoFrames;
+        this.caminhoVideoOriginal = caminhoVideoOriginal;
+        this.caminhoZip = caminhoZip;
+        this.quantidadeFrames = quantidadeFrames;
         this.criadoEm = criadoEm;
     }
 
-    public ProcessamentoEntity(String idCliente, String nomeVideo, StatusProcessamento status) {
+    public ProcessamentoEntity(String idCliente, String nomeVideo, StatusProcessamento status,
+                             String caminhoFrames, String caminhoVideoOriginal, String caminhoZip,
+                             Integer quantidadeFrames) {
         this.idCliente = idCliente;
         this.nomeVideo = nomeVideo;
         this.status = status;
+        this.caminhoFrames = caminhoFrames;
+        this.caminhoVideoOriginal = caminhoVideoOriginal;
+        this.caminhoZip = caminhoZip;
+        this.quantidadeFrames = quantidadeFrames;
     }
 
     public ProcessamentoEntity() {
+    }
+
+    // Getters e Setters para os novos campos
+    public String getCaminhoFrames() {
+        return caminhoFrames;
+    }
+
+    public void setCaminhoFrames(String caminhoFrames) {
+        this.caminhoFrames = caminhoFrames;
+    }
+
+    public String getCaminhoVideoOriginal() {
+        return caminhoVideoOriginal;
+    }
+
+    public void setCaminhoVideoOriginal(String caminhoVideoOriginal) {
+        this.caminhoVideoOriginal = caminhoVideoOriginal;
+    }
+
+    public String getCaminhoZip() {
+        return caminhoZip;
+    }
+
+    public void setCaminhoZip(String caminhoZip) {
+        this.caminhoZip = caminhoZip;
+    }
+
+    public Integer getQuantidadeFrames() {
+        return quantidadeFrames;
+    }
+
+    public void setQuantidadeFrames(Integer quantidadeFrames) {
+        this.quantidadeFrames = quantidadeFrames;
     }
 }
