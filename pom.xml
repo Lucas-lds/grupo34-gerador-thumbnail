@@ -107,6 +107,13 @@
             <version>2.25.27</version> <!-- Use a versão mais recente -->
         </dependency>
 
+        <!-- JavaCV para processamento de vídeo -->
+        <dependency>
+            <groupId>org.bytedeco</groupId>
+            <artifactId>javacv-platform</artifactId>
+            <version>1.5.9</version>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>
