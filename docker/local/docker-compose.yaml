@@ -1,45 +1,20 @@
-version: '3.8'
-
 services:
-  localstack:
-    image: localstack/localstack
-    container_name: localstack
-    environment:
-      - AWS_REGION=us-east-2
-      - SERVICES=sqs
-      - DATA_DIR=/tmp/localstack
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-    ports:
-      - "4566:4566"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-    networks:
-      - app-network
-
   mysql:
     image: mysql:8.0
-    container_name: mysql-db
-    restart: always
+    container_name: local-mysql
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: processamento_videos
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: dev123
     ports:
       - "3306:3306"
     volumes:
-      - mysql-data:/var/lib/mysql
-      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - app-network
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
-      interval: 30s
-      retries: 5
-      start_period: 30s
-      timeout: 5s
-
+      
   app:
     build:
       context: ..
@@ -73,23 +48,12 @@ services:
   adminer:
     image: adminer
     container_name: adminer
-    restart: always
     ports:
-      - "8081:8080"
-    depends_on:
-      mysql:
-        condition: service_healthy
+      - "8080:8080"
     networks:
       - app-network
 
-volumes:
-  mysql-data:
-
-networks:
-  app-network:
-    driver: bridge
-
-sqs:
+  sqs:
     image: softwaremill/elasticmq
     container_name: local-sqs
     ports:
@@ -98,3 +62,29 @@ sqs:
       - ./elasticmq.conf:/opt/elasticmq.conf
     environment:
       - JAVA_OPTS=-Dconfig.file=/opt/elasticmq.conf
+    networks:
+      - app-network
+
+  localstack:
+    image: localstack/localstack:latest
+    container_name: local-s3
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3
+      - DEBUG=1
+      - AWS_REGION=us-east-2
+      - DATA_DIR=/tmp/localstack
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    volumes:
+      - ./localstack/init:/docker-entrypoint-initaws.d
+    networks:
+      - app-network
+
+volumes:
+  mysql_data:
+
+networks:
+  app-network:
+    driver: bridge
