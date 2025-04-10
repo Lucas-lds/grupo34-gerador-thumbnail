@@ -14,6 +14,36 @@ services:
       - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - app-network
+      
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile  
+    container_name: videoframer
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      localstack:
+        condition: service_started
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}?useSSL=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+      AWS_REGION: us-east-2
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_ENDPOINT: http://localstack:4566
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail http://localhost:8080/actuator/health || exit 1"]
+      interval: 30s
+      retries: 5
+      start_period: 10s
+      timeout: 10s 
 
   adminer:
     image: adminer
@@ -43,6 +73,10 @@ services:
     environment:
       - SERVICES=s3
       - DEBUG=1
+      - AWS_REGION=us-east-2
+      - DATA_DIR=/tmp/localstack
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
     volumes:
       - ./localstack/init:/docker-entrypoint-initaws.d
     networks:
