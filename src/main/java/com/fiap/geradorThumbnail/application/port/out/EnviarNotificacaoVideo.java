@@ -4,5 +4,5 @@ import com.fiap.geradorThumbnail.core.domain.Video;
 
 public interface EnviarNotificacaoVideo {
 
-    void execute(Video video);
+    void execute(Video video, Long idProcessamento);
 }

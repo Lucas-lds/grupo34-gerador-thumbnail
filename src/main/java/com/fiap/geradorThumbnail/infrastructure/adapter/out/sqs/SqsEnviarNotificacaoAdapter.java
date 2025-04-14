@@ -24,8 +24,8 @@ public class SqsEnviarNotificacaoAdapter implements EnviarNotificacaoVideo {
     }
 
     @Override
-    public void execute(Video video) {
-        var videoMessage = VideoMessage.toMessage(video);
+    public void execute(Video video, Long idProcessamento) {
+        var videoMessage = VideoMessage.toMessage(video, idProcessamento);
         SendMessageRequest request = SendMessageRequest.builder().queueUrl(queueUrl).messageBody(toJson(videoMessage)).build();
 
         sqsAsyncClient.sendMessage(request).thenAccept(response ->

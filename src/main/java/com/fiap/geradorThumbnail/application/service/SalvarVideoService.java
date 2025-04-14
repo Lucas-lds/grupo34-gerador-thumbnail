@@ -22,7 +22,7 @@ public class SalvarVideoService implements SalvarVideoUseCase {
     @Override
     public void executar(Video video) {
         armazenarVideo.execute(video);
-        armazenarProcessamento.execute(video);
-        enviarNotificacaoVideo.execute(video);
+        var idProcessamento = armazenarProcessamento.execute(video);
+        enviarNotificacaoVideo.execute(video, idProcessamento);
     }
 }

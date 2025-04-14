@@ -12,12 +12,12 @@ import static com.fiap.geradorThumbnail.infrastructure.utils.UtilityFile.validar
 
 
 @Component
-public class S3VideoAdapter implements ArmazenarVideo {
+public class S3SalvarVideoAdapter implements ArmazenarVideo {
 
     private final S3Client s3Client;
     private final String bucketName;
 
-    public S3VideoAdapter(S3Client s3Client, @Value("${aws.s3.bucket-name}") String bucketName) {
+    public S3SalvarVideoAdapter(S3Client s3Client, @Value("${aws.s3.bucket-name}") String bucketName) {
         this.s3Client = s3Client;
         this.bucketName = bucketName;
     }
