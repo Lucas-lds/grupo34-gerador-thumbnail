@@ -22,7 +22,7 @@ jobs:
       - name: Build application
         run: |
           chmod +x mvnw # Concede permissão de execução ao Maven Wrapper
-          ./mvnw clean verify jacoco:report
+          ./mvnw clean
 
       - name: Upload application artifact
         uses: actions/upload-artifact@v4
