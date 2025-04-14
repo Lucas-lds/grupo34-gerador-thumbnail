@@ -5,7 +5,9 @@ import com.fiap.geradorThumbnail.core.usecases.SalvarVideoUseCase;
 import com.fiap.geradorThumbnail.application.port.out.ArmazenarVideo;
 import com.fiap.geradorThumbnail.application.port.out.EnviarNotificacaoVideo;
 import com.fiap.geradorThumbnail.core.domain.Video;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SalvarVideoService implements SalvarVideoUseCase {
 
     private final ArmazenarVideo armazenarVideo;

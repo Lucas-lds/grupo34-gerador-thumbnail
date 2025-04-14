@@ -17,6 +17,15 @@ public record VideoRequest(MultipartFile video, FormatoVideo formatoVideo, Strin
         var randomUuid = UUID.randomUUID().toString();
         var nomeArquivoFormatado = sanitizarNomeArquivo(removerExtensaoZip(nomeArquivoOriginal));
         var nomeArquivo = "videos/" + idUsuario + "/" + nomeArquivoFormatado + "_" + randomUuid + ".zip";
-        return new Video(video.getBytes(), idUsuario, formatoVideo.getExtensao(), nomeArquivo);
+        return new Video(
+            video.getBytes(), 
+            idUsuario, 
+            formatoVideo.getExtensao(), 
+            nomeArquivo,
+            null,  // caminhoFrames
+            null,  // caminhoVideoOriginal
+            null,  // caminhoZip
+            0      // quantidadeFrames
+        );
     }
 }
