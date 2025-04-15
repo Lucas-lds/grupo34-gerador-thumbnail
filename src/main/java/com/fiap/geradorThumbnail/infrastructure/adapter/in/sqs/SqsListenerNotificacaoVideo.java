@@ -1,12 +1,13 @@
 package com.fiap.geradorThumbnail.infrastructure.adapter.in.sqs;
 
+import com.fiap.geradorThumbnail.application.port.in.ReceberNotificacaoVideo;
 import com.fiap.geradorThumbnail.core.usecases.ProcessarVideoUseCase;
 import com.fiap.geradorThumbnail.infrastructure.adapter.out.sqs.messages.VideoMessage;
 import io.awspring.cloud.sqs.annotation.SqsListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SqsListenerNotificacaoVideo {
+public class SqsListenerNotificacaoVideo implements ReceberNotificacaoVideo {
 
     private final ProcessarVideoUseCase processarVideoUseCase;
 
@@ -21,8 +22,7 @@ public class SqsListenerNotificacaoVideo {
         processarVideoUseCase.executar(VideoMessage.toProcessamentoVideo(messageBody));
         System.out.println("Video processado com sucesso!");
 
-        // TODO rotar get passando como parametro idProcessamento e nome videos para baixar as thumbs no s3 dentro de um zip
-        // TODO rota get pra consultar os processamentos do MySql
+        // TODO tirar classes infra do core ReceberNotificaoVideo e listagem tambem
         // TODO deixar funcoes assyn talvez
     }
 }
