@@ -22,17 +22,17 @@ public class VideoProcessingAdapter implements VideoProcessorAdapterPortOut {
             double frameRate = grabber.getFrameRate();
             int interval = (int) (frameRate * 20);
             
-            Java2DFrameConverter converter = new Java2DFrameConverter();
             int frameNumber = 0;
-
-            for (int i = 0; i < grabber.getLengthInFrames(); i++) {
-                Frame frame = grabber.grabImage();
-                
-                if (frame != null && i % interval == 0) {
-                    BufferedImage bufferedImage = converter.convert(frame);
-                    File outputFile = new File(outputFolder, "frame_at_" + frameNumber + ".jpg");
-                    ImageIO.write(bufferedImage, "jpg", outputFile);
-                    frameNumber++;
+            try (Java2DFrameConverter converter = new Java2DFrameConverter()) {
+                for (int i = 0; i < grabber.getLengthInFrames(); i++) {
+                    Frame frame = grabber.grabImage();
+                    
+                    if (frame != null && i % interval == 0) {
+                        BufferedImage bufferedImage = converter.convert(frame);
+                        File outputFile = new File(outputFolder, "frame_at_" + frameNumber + ".jpg");
+                        ImageIO.write(bufferedImage, "jpg", outputFile);
+                        frameNumber++;
+                    }
                 }
             }
             grabber.stop();
