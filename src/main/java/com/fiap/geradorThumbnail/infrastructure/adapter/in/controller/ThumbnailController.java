@@ -1,4 +1,4 @@
-package com.fiap.geradorThumbnail.infrastructure.adapter.in;
+package com.fiap.geradorThumbnail.infrastructure.adapter.in.controller;
 
 import com.fiap.geradorThumbnail.core.usecases.BuscarStatusProcessamentoUseCase;
 import com.fiap.geradorThumbnail.core.usecases.BuscarThumbnailsZipUseCase;

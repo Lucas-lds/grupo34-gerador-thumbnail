@@ -1,8 +1,8 @@
-package com.fiap.geradorThumbnail.application.port.out.usecase;
+package com.fiap.geradorThumbnail.core.usecases;
 
 import com.fiap.geradorThumbnail.core.domain.Usuario;
 
-public interface UsuarioUseCasePortOut {
+public interface UsuarioUseCase {
 
     Usuario cadastrarUsuario(Usuario usuario);
 

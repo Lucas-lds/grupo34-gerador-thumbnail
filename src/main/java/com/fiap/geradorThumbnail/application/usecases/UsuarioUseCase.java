@@ -1,10 +1,9 @@
-package com.fiap.geradorThumbnail.core.usecase;
+package com.fiap.geradorThumbnail.application.usecases;
 
 import com.fiap.geradorThumbnail.application.port.out.UsuarioServicePortOut;
-import com.fiap.geradorThumbnail.application.port.out.usecase.UsuarioUseCasePortOut;
 import com.fiap.geradorThumbnail.core.domain.Usuario;
 
-public class UsuarioUseCase implements UsuarioUseCasePortOut {
+public class UsuarioUseCase implements com.fiap.geradorThumbnail.core.usecases.UsuarioUseCase {
     
     private final UsuarioServicePortOut usuarioService;
 

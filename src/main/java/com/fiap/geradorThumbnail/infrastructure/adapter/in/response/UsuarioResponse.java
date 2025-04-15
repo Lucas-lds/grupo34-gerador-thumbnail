@@ -1,4 +1,4 @@
-package com.fiap.geradorThumbnail.infrastructure.adapter.in;
+package com.fiap.geradorThumbnail.infrastructure.adapter.in.response;
 
 import com.fiap.geradorThumbnail.core.domain.Usuario;
 

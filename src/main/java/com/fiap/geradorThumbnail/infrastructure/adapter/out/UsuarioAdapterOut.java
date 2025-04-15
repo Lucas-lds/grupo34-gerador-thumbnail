@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 
 import com.fiap.geradorThumbnail.application.port.out.UsuarioAdapterPortOut;
 import com.fiap.geradorThumbnail.core.domain.Usuario;
-import com.fiap.geradorThumbnail.infrastructure.adapter.out.repository.UsuarioRepository;
-import com.fiap.geradorThumbnail.infrastructure.adapter.out.entity.UsuarioEntity;
+import com.fiap.geradorThumbnail.infrastructure.adapter.out.repository.repositories.UsuarioRepository;
+import com.fiap.geradorThumbnail.infrastructure.adapter.out.repository.entities.UsuarioEntity;
 import com.fiap.geradorThumbnail.infrastructure.exception.EmailDuplicadoException;
 
 @Component

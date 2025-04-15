@@ -4,9 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.fiap.geradorThumbnail.application.port.out.usecase.UsuarioUseCasePortOut;
+import com.fiap.geradorThumbnail.core.usecases.UsuarioUseCase;
 import com.fiap.geradorThumbnail.core.dto.UsuarioCognitoResponseDTO;
-import com.fiap.geradorThumbnail.infrastructure.adapter.in.UsuarioResponse;
+import com.fiap.geradorThumbnail.infrastructure.adapter.in.response.UsuarioResponse;
 import com.fiap.geradorThumbnail.infrastructure.adapter.in.request.UsuarioRequest;
 import com.fiap.geradorThumbnail.infrastructure.adapter.out.ValidarLambdaAdapterOut;
 import com.fiap.geradorThumbnail.infrastructure.exception.UsuarioSemPermissaoCognitoException;
@@ -14,16 +14,16 @@ import com.fiap.geradorThumbnail.infrastructure.exception.UsuarioSemPermissaoCog
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioController {
-    private final UsuarioUseCasePortOut usuarioUseCasePortOut;
+    private final UsuarioUseCase usuarioUseCase;
 
-    public UsuarioController(UsuarioUseCasePortOut usuarioUseCasePortOut, ValidarLambdaAdapterOut validarLambdaAdapterOut) {
-        this.usuarioUseCasePortOut = usuarioUseCasePortOut;
+    public UsuarioController(UsuarioUseCase usuarioUseCase, ValidarLambdaAdapterOut validarLambdaAdapterOut) {
+        this.usuarioUseCase = usuarioUseCase;
     }
 
     @PostMapping("/cadastrar")
     public ResponseEntity<?> cadastrarUsuario(@RequestBody UsuarioRequest usuarioRequest) {
         try {
-            var usuarioCadastrado = usuarioUseCasePortOut.cadastrarUsuario(usuarioRequest.toDomain());
+            var usuarioCadastrado = usuarioUseCase.cadastrarUsuario(usuarioRequest.toDomain());
             UsuarioResponse.fromDomain(usuarioCadastrado);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new UsuarioCognitoResponseDTO(true, "Usuario cadastrado com sucesso", usuarioRequest.email()));
@@ -36,7 +36,7 @@ public class UsuarioController {
     @GetMapping("/auth") 
     public ResponseEntity<UsuarioCognitoResponseDTO> validarUsuario(@RequestParam String email, @RequestParam String senha) {
         try {
-            usuarioUseCasePortOut.validarAutenticacaoUsuario(email, senha);
+            usuarioUseCase.validarAutenticacaoUsuario(email, senha);
             return ResponseEntity.ok(new UsuarioCognitoResponseDTO(true, "Usuário autenticado com sucesso!", email));
         } catch (UsuarioSemPermissaoCognitoException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
