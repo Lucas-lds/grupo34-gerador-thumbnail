@@ -8,5 +8,7 @@ import java.util.List;
 public interface ProcessamentoRepository extends JpaRepository<ProcessamentoEntity, Long> {
 
     List<ProcessamentoEntity> findByIdCliente(String idCliente);
+
+    List<ProcessamentoEntity> findByIdClienteOrderByStatusAscCriadoEmDesc(String idCliente);
 }
 

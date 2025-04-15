@@ -1,6 +1,6 @@
 package com.fiap.geradorThumbnail.infrastructure.adapter.out.entity;
 
-import com.fiap.geradorThumbnail.infrastructure.adapter.out.repository.entities.enums.StatusProcessamento;
+import com.fiap.geradorThumbnail.core.domain.enums.StatusProcessamento;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

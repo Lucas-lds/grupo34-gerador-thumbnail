@@ -21,7 +21,7 @@ public class SqsListenerNotificacaoVideo {
         processarVideoUseCase.executar(VideoMessage.toProcessamentoVideo(messageBody));
         System.out.println("Video processado com sucesso!");
 
-        // TODO rotar get passando como parametro idProcessamento e nome video para baixar as thumbs no s3 dentro de um zip
+        // TODO rotar get passando como parametro idProcessamento e nome videos para baixar as thumbs no s3 dentro de um zip
         // TODO rota get pra consultar os processamentos do MySql
         // TODO deixar funcoes assyn talvez
     }

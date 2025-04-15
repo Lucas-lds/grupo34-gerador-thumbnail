@@ -5,11 +5,17 @@ import com.fiap.geradorThumbnail.application.port.out.BuscarVideo;
 import com.fiap.geradorThumbnail.application.port.out.GerarThumbnail;
 import com.fiap.geradorThumbnail.core.dto.ProcessamentoVideo;
 import com.fiap.geradorThumbnail.infrastructure.utils.ThumbnailUtils;
+import org.bytedeco.javacv.FFmpegFrameGrabber;
+import org.bytedeco.javacv.Frame;
+import org.bytedeco.javacv.Java2DFrameConverter;
 import org.springframework.stereotype.Component;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 public class GerarThumbnailAdapterOut implements GerarThumbnail {
@@ -25,19 +31,37 @@ public class GerarThumbnailAdapterOut implements GerarThumbnail {
     @Override
     public void execute(ProcessamentoVideo processamentoVideo) {
         String caminhoVideo = processamentoVideo.nomeVideo();
-        var arquivoVideo = buscarVideo.execute(caminhoVideo);
-        var formatoVideo = processamentoVideo.formatoVideo();
 
-        //TODO mocks de thumbnail substituir pela lógica do Lucas
-        InputStream thumb1 = getClass().getResourceAsStream("/mockJpg/thumbnail1.jpg");
-        InputStream thumb2 = getClass().getResourceAsStream("/mockJpg/thumbnail2.jpg");
-        InputStream thumb3 = getClass().getResourceAsStream("/mockJpg/thumbnail3.jpg");
+        try (InputStream videoStream = buscarVideo.execute(caminhoVideo)) {
+            byte[] videoBytes = videoStream.readAllBytes();
 
-        Map<String, InputStream> thumbnails = new HashMap<>();
-        thumbnails.put(ThumbnailUtils.gerarCaminhoThumbnail(caminhoVideo), thumb1);
-        thumbnails.put(ThumbnailUtils.gerarCaminhoThumbnail(caminhoVideo), thumb2);
-        thumbnails.put(ThumbnailUtils.gerarCaminhoThumbnail(caminhoVideo), thumb3);
+            try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(new ByteArrayInputStream(videoBytes))) {
+                grabber.start();
+                double frameRate = grabber.getFrameRate();
+                int interval = (int) (frameRate * 20);
 
-        armazenarThumbnails.execute(thumbnails);
+                Java2DFrameConverter converter = new Java2DFrameConverter();
+                int frameNumber = 0;
+
+                for (int i = 0; i < grabber.getLengthInFrames(); i++) {
+                    Frame frame = grabber.grabImage();
+                    if (frame != null && i % interval == 0) {
+                        BufferedImage image = converter.convert(frame);
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        ImageIO.write(image, "jpg", baos);
+                        byte[] imagemBytes = baos.toByteArray();
+
+                        String caminho = ThumbnailUtils.gerarCaminhoThumbnail(caminhoVideo) + "_frame_" + frameNumber + ".jpg";
+                        armazenarThumbnails.execute(caminho, imagemBytes);
+                        frameNumber++;
+                    }
+                }
+
+                grabber.stop();
+
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao gerar thumbnails do vídeo: " + caminhoVideo, e);
+        }
     }
 }

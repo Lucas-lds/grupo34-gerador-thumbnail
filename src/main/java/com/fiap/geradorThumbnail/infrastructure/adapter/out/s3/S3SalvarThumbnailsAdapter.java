@@ -23,23 +23,15 @@ public class S3SalvarThumbnailsAdapter implements ArmazenarThumbnails {
     }
 
     @Override
-    public void execute(Map<String, InputStream> imagens) {
-        imagens.forEach((caminhoImagem, imagemStream) -> {
-            try {
-                byte[] imagemBytes = imagemStream.readAllBytes();
+    public void execute(String caminhoImagem, byte[] imagemBytes) {
+        PutObjectRequest request = PutObjectRequest.builder()
+                .bucket(bucketName)
+                .key(caminhoImagem)
+                .contentType("image/jpeg")
+                .build();
 
-                PutObjectRequest request = PutObjectRequest.builder()
-                        .bucket(bucketName)
-                        .key(caminhoImagem)
-                        .contentType("image/png")
-                        .build();
-
-                s3Client.putObject(request, RequestBody.fromBytes(imagemBytes));
-                System.out.println("✅ Thumbnail enviada para S3: " + caminhoImagem);
-
-            } catch (IOException e) {
-                throw new RuntimeException("Erro ao enviar a imagem para o S3: " + caminhoImagem, e);
-            }
-        });
+        s3Client.putObject(request, RequestBody.fromBytes(imagemBytes));
+        System.out.println("✅ Thumbnail enviada para S3: " + caminhoImagem);
     }
 }
+

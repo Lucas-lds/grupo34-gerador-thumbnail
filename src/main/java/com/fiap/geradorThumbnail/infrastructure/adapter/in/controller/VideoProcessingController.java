@@ -41,8 +41,10 @@ public class VideoProcessingController {
     private SalvarVideoService salvarVideoService;
 
     @Operation(summary = "Processar vídeo e extrair frames", description = "Carregue vários arquivos de vídeo para extrair frames e obter um ZIP com todos os frames")
-    @PostMapping(value = "/video/process", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> processVideos(@RequestPart(value = "files", required = true) @Parameter(description = "Vídeo para processar", 
+    @PostMapping(value = "/videos/process", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> processVideos(
+            @RequestPart(value = "files", required = true)
+            @Parameter(description = "Vídeo para processar",
             content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
             schema = @Schema(type = "string", format = "binary")))
             List<MultipartFile> videoFiles,
@@ -112,20 +114,20 @@ public class VideoProcessingController {
                 String videoPath = parts[2];
                 
                 String nomeArquivo = videoPath.substring(videoPath.lastIndexOf(File.separator) + 1);
-                // Read video file bytes
+                // Read videos file bytes
                 byte[] videoBytes = Files.readAllBytes(Path.of(videoPath));
                 
                 Video video = new Video(
                     videoBytes,
                     userId,
                     nomeArquivo.substring(nomeArquivo.lastIndexOf('.') + 1), // formatoVideo
-                    nomeArquivo,
-                    outputFolder,  // caminhoFrames
-                    videoPath,     // caminhoVideoOriginal
-                    null,          // caminhoZip (não usado mais)
-                    frameCount     // quantidadeFrames
+                    nomeArquivo
+                        // caminhoFrames
+                        // caminhoVideoOriginal
+                        // caminhoZip (não usado mais)
+                        // quantidadeFrames
                 );
-                salvarVideoService.executar(video);
+//                salvarVideoService.executar(video);
             }
 
             // Adiciona informações no cabeçalho e retorna o arquivo para download

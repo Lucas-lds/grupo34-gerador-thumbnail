@@ -8,8 +8,7 @@ import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
-import static com.fiap.geradorThumbnail.infrastructure.utils.UtilityFile.validarFormatoZip;
-
+import java.util.List;
 
 @Component
 public class S3SalvarVideoAdapter implements ArmazenarVideo {
@@ -23,15 +22,16 @@ public class S3SalvarVideoAdapter implements ArmazenarVideo {
     }
 
     @Override
-    public void execute(Video video) {
-        validarFormatoZip(video.getVideo());
-        PutObjectRequest request = PutObjectRequest.builder()
-                .bucket(bucketName)
-                .key(video.getNomeArquivo())
-                .contentType("application/zip")
-                .build();
+    public void execute(List<Video> videos) {
+        for (Video video : videos) {
+            PutObjectRequest request = PutObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(video.getCaminhoVideo())
+                    .contentType("video/" + video.getFormatoVideo())
+                    .build();
 
-        s3Client.putObject(request, RequestBody.fromBytes(video.getVideo()));
-        System.out.println("✅ Vídeo enviado com sucesso para o S3: " + video.getNomeArquivo());
+            s3Client.putObject(request, RequestBody.fromBytes(video.getVideo()));
+            System.out.println("✅ Vídeo enviado com sucesso para o S3: " + video.getCaminhoVideo());
+        }
     }
 }

@@ -2,7 +2,9 @@ package com.fiap.geradorThumbnail.application.port.out;
 
 import com.fiap.geradorThumbnail.core.domain.Video;
 
+import java.util.List;
+
 public interface EnviarNotificacaoVideo {
 
-    void execute(Video video, Long idProcessamento);
+    void execute(List<Video> video, List<Long> idProcessamento);
 }
