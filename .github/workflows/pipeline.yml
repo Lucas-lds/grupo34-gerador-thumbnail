@@ -21,7 +21,7 @@ jobs:
       - name: Build application
         run: |
           chmod +x mvnw
-          ./mvnw clean verify
+          ./mvnw clean verify jacoco:report
 
       - name: Upload application artifact
         uses: actions/upload-artifact@v4
