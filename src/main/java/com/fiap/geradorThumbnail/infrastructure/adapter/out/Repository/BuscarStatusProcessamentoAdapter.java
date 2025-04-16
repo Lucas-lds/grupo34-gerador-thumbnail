@@ -1,5 +1,6 @@
 package com.fiap.geradorThumbnail.infrastructure.adapter.out.repository;
 
+import com.fiap.geradorThumbnail.core.dto.ProcessamentoStatus;
 import com.fiap.geradorThumbnail.core.usecases.BuscarStatusProcessamentoUseCase;
 import com.fiap.geradorThumbnail.infrastructure.adapter.in.response.ProcessamentoResponse;
 import com.fiap.geradorThumbnail.infrastructure.adapter.out.repository.repositories.ProcessamentoRepository;
@@ -17,9 +18,9 @@ public class BuscarStatusProcessamentoAdapter implements BuscarStatusProcessamen
     }
 
     @Override
-    public List<ProcessamentoResponse> execute(String idUsuario) {
+    public List<ProcessamentoStatus> execute(String idUsuario) {
         return repository.findByIdClienteOrderByStatusAscCriadoEmDesc(idUsuario).stream()
-                .map(p -> new ProcessamentoResponse(
+                .map(p -> new ProcessamentoStatus(
                         p.getId(),
                         p.getNomeVideo(),
                         p.getStatus().name(),

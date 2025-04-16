@@ -1,7 +1,7 @@
 package com.fiap.geradorThumbnail.application.port.in;
 
-import com.fiap.geradorThumbnail.infrastructure.adapter.out.sqs.messages.VideoMessage;
+import com.fiap.geradorThumbnail.core.dto.SolicitacaoProcessamentoVideo;
 
 public interface ReceberNotificacaoVideo {
-    void listen(VideoMessage messageBody);
+    void listen(SolicitacaoProcessamentoVideo messageBody);
 }

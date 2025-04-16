@@ -33,17 +33,7 @@ public class ThumbnailController {
     }
 
     @PostMapping(value = "/enviar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void enviarMensagem(
-            @Parameter(
-                    description = "Vídeos para processar",
-                    content = @Content(
-                            mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
-                            schema = @Schema(type = "string", format = "binary")
-                    )
-            )
-            @RequestPart("videos") List<MultipartFile> videos,
-            @RequestPart("idUsuario") String idUsuario
-    ) throws IOException {
+    public void enviarMensagem(@Parameter(description = "Vídeos para processar", content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE, schema = @Schema(type = "string", format = "binary"))) @RequestPart("videos") List<MultipartFile> videos, @RequestPart("idUsuario") String idUsuario) throws IOException {
         VideoRequest videoRequest = new VideoRequest(videos, idUsuario);
         salvarVideoUseCase.executar(videoRequest.toDomain());
     }
@@ -59,7 +49,9 @@ public class ThumbnailController {
 
     @GetMapping("/status")
     public ResponseEntity<List<ProcessamentoResponse>> listarStatusPorUsuario(@RequestParam String idUsuario) {
-        List<ProcessamentoResponse> status = buscarStatusProcessamentoUseCase.execute(idUsuario);
+        List<ProcessamentoResponse> status = buscarStatusProcessamentoUseCase.execute(idUsuario)
+                .stream().map(ProcessamentoResponse::toResponse).toList();
+
         return ResponseEntity.ok(status);
     }
 }

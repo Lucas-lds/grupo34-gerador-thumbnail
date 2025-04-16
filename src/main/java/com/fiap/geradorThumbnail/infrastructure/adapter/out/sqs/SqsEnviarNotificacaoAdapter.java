@@ -2,7 +2,7 @@ package com.fiap.geradorThumbnail.infrastructure.adapter.out.sqs;
 
 import com.fiap.geradorThumbnail.application.port.out.EnviarNotificacaoVideo;
 import com.fiap.geradorThumbnail.core.domain.Video;
-import com.fiap.geradorThumbnail.infrastructure.adapter.out.sqs.messages.VideoMessage;
+import com.fiap.geradorThumbnail.core.dto.SolicitacaoProcessamentoVideo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.services.sqs.SqsAsyncClient;
@@ -31,7 +31,7 @@ public class SqsEnviarNotificacaoAdapter implements EnviarNotificacaoVideo {
             Video video = videos.get(i);
             Long idProcessamento = idsProcessamentos.get(i);
 
-            var videoMessage = VideoMessage.toMessage(video, idProcessamento);
+            var videoMessage = SolicitacaoProcessamentoVideo.toMessage(video, idProcessamento);
 
             SendMessageRequest request = SendMessageRequest.builder()
                     .queueUrl(queueUrl)
