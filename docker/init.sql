@@ -10,6 +10,11 @@ CREATE TABLE IF NOT EXISTS tb_usuarios (
     telefone VARCHAR(255) NOT NULL
 );
 
+-- Inserir dados iniciais na tabela de usuários
+INSERT INTO users (cognito_user_id, username, email)
+VALUES
+('12345678-1234-1234-1234-123456789012', 'usuario_exemplo', 'usuario_exemplo@example.com');
+
 CREATE TABLE IF NOT EXISTS tb_videos (
     id CHAR(36) PRIMARY KEY,
     id_usuario INT NOT NULL,
