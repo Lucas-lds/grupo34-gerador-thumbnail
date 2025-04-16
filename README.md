@@ -177,10 +177,10 @@ git clone https://github.com/Lucas-lds/grupo34-gerador-thumbnail.git
     cd /docker
     ``` 
   - Passo 2: Abra o script e preencha as seguintes variáveis com suas informações:
-    - **AWS_REGION=""** (ex: us-east-1) 
-    - **ACCOUNT_ID=""** (seu ID da conta AWS)  
-    - **REPO_NAME=""** (nome do repositório, neste caso repositorio)  
-    - **IMAGE_TAG=""** (tag desejada para a imagem, ex: latest)  
+    - **AWS_REGION=** (ex: us-east-1) 
+    - **ACCOUNT_ID=** (seu ID da conta AWS)  
+    - **REPO_NAME=** (nome do repositório, neste caso repositorio)  
+    - **IMAGE_TAG=** (tag desejada para a imagem, ex: latest)  
   - Passo 3: Execute o script para:
     - Construir a imagem
     - Taguear a imagem
