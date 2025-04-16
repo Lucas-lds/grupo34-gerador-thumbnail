@@ -1,13 +1,10 @@
 package com.fiap.geradorThumbnail.infrastructure.adapter.out;
 
-import java.net.URI;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.fiap.geradorThumbnail.application.port.out.CognitoAdapterPortOut;
-import com.fiap.geradorThumbnail.core.dto.UsuarioCognitoRequestDTO;
-import com.fiap.geradorThumbnail.core.dto.UsuarioCognitoResponseDTO;
+import com.fiap.geradorThumbnail.core.dto.UsuarioCognitoRequest;
 import com.fiap.geradorThumbnail.infrastructure.exception.CadastroCognitoException;
 import com.fiap.geradorThumbnail.infrastructure.exception.UsuarioPossuiCadastroCognito;
 
@@ -37,7 +34,7 @@ public class CognitoAdapterOut implements CognitoAdapterPortOut {
     }
 
     @Override
-    public void cadastrarUsuarioCognito(UsuarioCognitoRequestDTO usuario) {
+    public void cadastrarUsuarioCognito(UsuarioCognitoRequest usuario) {
         try {
             AdminCreateUserRequest createUserRequest = AdminCreateUserRequest.builder()
                     .userPoolId(userPoolId)

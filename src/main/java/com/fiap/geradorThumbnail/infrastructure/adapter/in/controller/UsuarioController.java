@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.fiap.geradorThumbnail.core.usecases.UsuarioUseCase;
-import com.fiap.geradorThumbnail.core.dto.UsuarioCognitoResponseDTO;
+import com.fiap.geradorThumbnail.core.dto.UsuarioCognitoResponse;
 import com.fiap.geradorThumbnail.infrastructure.adapter.in.response.UsuarioResponse;
 import com.fiap.geradorThumbnail.infrastructure.adapter.in.request.UsuarioRequest;
 import com.fiap.geradorThumbnail.infrastructure.adapter.out.ValidarLambdaAdapterOut;
@@ -26,24 +26,24 @@ public class UsuarioController {
             var usuarioCadastrado = usuarioUseCase.cadastrarUsuario(usuarioRequest.toDomain());
             UsuarioResponse.fromDomain(usuarioCadastrado);
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new UsuarioCognitoResponseDTO(true, "Usuario cadastrado com sucesso", usuarioRequest.email()));
+                    .body(new UsuarioCognitoResponse(true, "Usuario cadastrado com sucesso", usuarioRequest.email()));
         } catch (Exception e) {
             return ResponseEntity.badRequest()
-                    .body(new UsuarioCognitoResponseDTO(false, e.getMessage(), usuarioRequest.email()));
+                    .body(new UsuarioCognitoResponse(false, e.getMessage(), usuarioRequest.email()));
         }
     }
 
     @GetMapping("/auth") 
-    public ResponseEntity<UsuarioCognitoResponseDTO> validarUsuario(@RequestParam String email, @RequestParam String senha) {
+    public ResponseEntity<UsuarioCognitoResponse> validarUsuario(@RequestParam String email, @RequestParam String senha) {
         try {
             usuarioUseCase.validarAutenticacaoUsuario(email, senha);
-            return ResponseEntity.ok(new UsuarioCognitoResponseDTO(true, "Usuário autenticado com sucesso!", email));
+            return ResponseEntity.ok(new UsuarioCognitoResponse(true, "Usuário autenticado com sucesso!", email));
         } catch (UsuarioSemPermissaoCognitoException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new UsuarioCognitoResponseDTO(false, e.getMessage(), email));
+                    .body(new UsuarioCognitoResponse(false, e.getMessage(), email));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new UsuarioCognitoResponseDTO(false, e.getMessage(), email));
+                    .body(new UsuarioCognitoResponse(false, e.getMessage(), email));
         }
     }
 }
