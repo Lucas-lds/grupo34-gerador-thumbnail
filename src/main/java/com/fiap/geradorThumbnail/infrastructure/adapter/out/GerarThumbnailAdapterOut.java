@@ -37,17 +37,15 @@ public class GerarThumbnailAdapterOut implements GerarThumbnail {
 
             try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(new ByteArrayInputStream(videoBytes))) {
                 grabber.start();
-
                 double frameRate = grabber.getFrameRate();
-                int interval = (int) (frameRate * 2);
+                int interval = (int) (frameRate * 20);
 
                 Java2DFrameConverter converter = new Java2DFrameConverter();
                 int frameNumber = 0;
 
                 for (int i = 0; i < grabber.getLengthInFrames(); i++) {
                     Frame frame = grabber.grabImage();
-
-                    if (frame != null && (i == 0 || i % interval == 0)) {
+                    if (frame != null && i % interval == 0) {
                         BufferedImage image = converter.convert(frame);
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
                         ImageIO.write(image, "jpg", baos);
