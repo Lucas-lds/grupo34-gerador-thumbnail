@@ -1,4 +1,4 @@
-package com.fiap.geradorThumbnail.infrastructure.adapter.out.entity;
+package com.fiap.geradorThumbnail.infrastructure.adapter.out.repository.entities;
 import com.fiap.geradorThumbnail.core.domain.Usuario;
 
 import jakarta.persistence.*;
