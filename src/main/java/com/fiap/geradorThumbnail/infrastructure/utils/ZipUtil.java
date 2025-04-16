@@ -3,6 +3,7 @@ package com.fiap.geradorThumbnail.infrastructure.utils;
 import java.io.*;
 import java.nio.file.*;
 import java.util.List;
+import java.util.stream.Stream;
 import java.util.zip.*;
 import org.springframework.core.io.InputStreamResource;
 
@@ -15,19 +16,20 @@ public class ZipUtil {
     public static InputStreamResource createZipAsStream(String baseFolder, List<String> folderPaths) throws IOException {
         Path basePath = Paths.get(baseFolder);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        
+
         try (ZipOutputStream zos = new ZipOutputStream(baos)) {
             for (String folderPath : folderPaths) {
                 Path folder = Paths.get(folderPath);
-                Files.walk(folder)
-                    .filter(Files::isRegularFile)
-                    .forEach(file -> {
-                        try {
-                            addFileToZip(zos, file, basePath);
-                        } catch (IOException e) {
-                            throw new UncheckedIOException(e);
-                        }
-                    });
+                try (Stream<Path> stream = Files.walk(folder)) {
+                    stream.filter(Files::isRegularFile)
+                        .forEach(file -> {
+                            try {
+                                addFileToZip(zos, file, basePath);
+                            } catch (IOException e) {
+                                throw new UncheckedIOException(e);
+                            }
+                        });
+                }
             }
         }
         return new InputStreamResource(new ByteArrayInputStream(baos.toByteArray()));
@@ -40,15 +42,16 @@ public class ZipUtil {
         try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFilePath))) {
             for (String folderPath : folderPaths) {
                 Path folder = Paths.get(folderPath);
-                Files.walk(folder)
-                    .filter(Files::isRegularFile)
-                    .forEach(file -> {
-                        try {
-                            addFileToZip(zos, file, basePath);
-                        } catch (IOException e) {
-                            throw new UncheckedIOException(e);
-                        }
-                    });
+                try (Stream<Path> stream = Files.walk(folder)) {
+                    stream.filter(Files::isRegularFile)
+                        .forEach(file -> {
+                            try {
+                                addFileToZip(zos, file, basePath);
+                            } catch (IOException e) {
+                                throw new UncheckedIOException(e);
+                            }
+                        });
+                }
             }
         }
 
@@ -57,9 +60,8 @@ public class ZipUtil {
 
     private static void addFileToZip(ZipOutputStream zos, Path file, Path outputFolder) throws IOException {
         try (FileInputStream fis = new FileInputStream(file.toFile())) {
-            // Usa relativize corretamente entre Path
             Path relativePath = outputFolder.relativize(file);
-            String zipEntryName = relativePath.toString().replace("\\", "/"); // Converte para o formato Unix
+            String zipEntryName = relativePath.toString().replace("\\", "/");
 
             ZipEntry zipEntry = new ZipEntry(zipEntryName);
             zos.putNextEntry(zipEntry);
