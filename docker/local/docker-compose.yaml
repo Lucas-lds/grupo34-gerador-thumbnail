@@ -89,7 +89,7 @@ services:
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_KEY}
     volumes:
-      - ./localstack/init:/docker-entrypoint-initaws.d
+      - ./localstack/entrypoint.sh:/etc/localstack/init/ready.d/entrypoint.sh
     networks:
       - app-network
 
