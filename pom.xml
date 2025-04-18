@@ -114,6 +114,12 @@
             <version>1.5.9</version>
         </dependency>
 
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>sns</artifactId>
+        </dependency>
+
+
     </dependencies>
 
     <dependencyManagement>
