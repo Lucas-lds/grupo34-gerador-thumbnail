@@ -181,7 +181,7 @@ public class UsuarioThumbnailControllerBDDTest {
 
             ArgumentCaptor<java.util.List> captor = ArgumentCaptor.forClass(java.util.List.class);
             verify(salvarVideoUseCase).executar(captor.capture());
-            verify(snsService).sendNotification("Processamento do vídeo finalizado", "Thumbnail Generator");
+verify(snsService).sendNotification("Processamento do vídeo finalizado.", "Thumbnail Generator");
 
             List capturedList = captor.getValue();
             assertThat(capturedList).isNotEmpty();
