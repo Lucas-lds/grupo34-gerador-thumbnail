@@ -121,3 +121,30 @@ resource "aws_iam_role_policy_attachment" "attach_s3_policy_to_role" {
   role       = aws_iam_role.eks_role.name
   policy_arn = aws_iam_policy.s3_access_policy.arn
 }
+
+resource "aws_iam_policy" "sqs_access_policy" {
+  name        = "SQSAccessPolicy"
+  description = "Policy to allow access to SQS for video processing"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "sqs:SendMessage",
+          "sqs:ReceiveMessage",
+          "sqs:DeleteMessage",
+          "sqs:GetQueueAttributes"
+        ],
+        Resource = "arn:aws:sqs:us-east-1:717279688908:sqs-solicitacao-processamento.fifo"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "attach_sqs_policy_to_role" {
+  #role       = aws_iam_role.eks_role.name
+  role       = aws_iam_role.rds_access_role.name
+  policy_arn = aws_iam_policy.sqs_access_policy.arn
+}

@@ -47,11 +47,11 @@ resource "aws_s3_bucket_lifecycle_configuration" "video_lifecycle" {
   }
 }
 
-# resource "aws_s3_bucket_public_access_block" "video_bucket_public_access" {
-#   bucket = aws_s3_bucket.video.id
+resource "aws_s3_bucket_public_access_block" "video_bucket_public_access" {
+  bucket = aws_s3_bucket.video.id
 
-#   block_public_acls       = true
-#   block_public_policy     = false # Permite aplicar políticas específicas
-#   ignore_public_acls      = true
-#   restrict_public_buckets = false
-# }
+  block_public_acls       = true
+  block_public_policy     = false # Permite aplicar políticas específicas
+  ignore_public_acls      = true
+  restrict_public_buckets = false
+}

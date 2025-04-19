@@ -71,6 +71,15 @@ resource "aws_iam_policy" "eks_node_policy" {
         ],
         Resource = "*",
       },
+      {
+        Effect = "Allow",
+        Action = [
+          "sqs:ReceiveMessage",
+          "sqs:DeleteMessage",
+          "sqs:GetQueueAttributes"
+        ],
+        Resource = "*",
+      },
     ],
   })
 }

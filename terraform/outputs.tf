@@ -76,7 +76,7 @@ output "s3_region" {
 
 # AWS SQS
 
-# URL da fila SQS que armazena o status dos vídeos
+# URL da fila SQS
 output "video_queue_url" {
   value = aws_sqs_queue.sqs-solicitacao-processamento.url
 }

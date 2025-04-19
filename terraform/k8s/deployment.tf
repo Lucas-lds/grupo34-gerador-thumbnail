@@ -52,13 +52,17 @@ resource "kubernetes_deployment" "video2frames-api" {
 
         container {
           name  = "video2frames"
-          image = "717279688908.dkr.ecr.us-east-1.amazonaws.com/repositorio:v3" # Substitua pela imagem correta
+          image = "717279688908.dkr.ecr.us-east-1.amazonaws.com/repositorio:v14" # Substitua pela imagem correta
 
           # Passando variáveis de ambiente do Cognito
           env {
             name  = "COGNITO_USER_POOL_ID"
             value = data.terraform_remote_state.infra.outputs.cognito_user_pool_id
           }
+          env {
+            name  = "COGNITO_USERNAME"
+            value = data.terraform_remote_state.infra.outputs.cognito_username
+          }          
           env {
             name  = "COGNITO_CLIENT_ID"
             value = data.terraform_remote_state.infra.outputs.user_pool_client_id
@@ -97,9 +101,21 @@ resource "kubernetes_deployment" "video2frames-api" {
             name  = "RDS_ENDPOINT"
             value = data.terraform_remote_state.infra.outputs.mvideo2frames_rds_endpoint # RDS endpoint
           }
+          # env {
+          #   name  = "VIDEO_QUEUE_URL"
+          #   value = data.terraform_remote_state.infra.outputs.video_queue_url
+          # }
           env {
-            name  = "SQS_VIDEO_QUEUE_URL"
-            value = data.terraform_remote_state.infra.outputs.video_queue_url
+            name  = "CLOUD_AWS_SQS_QUEUE_NAME_RESOLVER_QUEUES_SQS_SOLICITACAO_PROCESSAMENTO_FIFO"
+            value = "https://sqs.us-east-1.amazonaws.com/717279688908/sqs-solicitacao-processamento.fifo"
+          }
+          env {
+              name  = "CLOUD_AWS_SQS_QUEUE_CREATION_STRATEGY"
+              value = "NONE" # Define a estratégia de criação de filas no SQS como "NONE" (sem criação automática de filas)
+          }
+          env {
+              name  = "CLOUD_AWS_SQS_LISTENER_QUEUE_NAME_RESOLVER_QUEUE_RESOLUTION_STRATEGY"
+              value = "explicit"
           }
           env {
             name  = "REGION"
@@ -109,6 +125,11 @@ resource "kubernetes_deployment" "video2frames-api" {
             name = "AWS_S3_PATH_STYLE"
             value = "true" # Para compatibilidade com o S3
           }
+          # Passando a URL do API Gateway
+          env {
+            name  = "GATEWAY_URL"
+            value = data.terraform_remote_state.infra.outputs.gateway_url
+          }          
           env {
             name = "MYSQL_DATABASE"
             value_from {
@@ -118,13 +139,6 @@ resource "kubernetes_deployment" "video2frames-api" {
               }
             }
           }
-
-          # Passando a URL do API Gateway
-          env {
-            name  = "GATEWAY_URL"
-            value = data.terraform_remote_state.infra.outputs.gateway_url
-          }
-
           env {
             name = "MYSQL_USER"
             value_from {
@@ -134,7 +148,6 @@ resource "kubernetes_deployment" "video2frames-api" {
               }
             }
           }
-
           env {
             name = "MYSQL_PASSWORD"
             value_from {
@@ -144,6 +157,24 @@ resource "kubernetes_deployment" "video2frames-api" {
               }
             }
           }
+          # env {
+          #   name = "AWS_ACCESS_KEY_ID"
+          #   value_from {
+          #     secret_key_ref {
+          #       name = data.kubernetes_secret.db_secret.metadata[0].name
+          #       key  = "AWS_ACCESS_KEY_ID"
+          #     }
+          #   }
+          # }          
+          # env {
+          #   name = "AWS_SECRET_ACCESS_KEY"
+          #   value_from {
+          #     secret_key_ref {
+          #       name = data.kubernetes_secret.db_secret.metadata[0].name
+          #       key  = "AWS_SECRET_ACCESS_KEY"
+          #     }
+          #   }
+          # }          
 
           # Recursos e limites
           resources {

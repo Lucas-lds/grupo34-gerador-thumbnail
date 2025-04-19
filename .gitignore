@@ -83,3 +83,5 @@ docker/build_and_push.sh
 
 *.json
 *.sh
+
+/terraform/lambda_package/

@@ -1,6 +1,6 @@
 # Criação da fila de processamento de vídeos
 resource "aws_sqs_queue" "sqs-solicitacao-processamento" {
-  name                        = "video-processing-queue.fifo"
+  name                        = "sqs-solicitacao-processamento.fifo"
   fifo_queue                  = true
   content_based_deduplication = true # Ativa a deduplicação baseada no conteúdo
   delay_seconds               = 0

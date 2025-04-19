@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class SqsListenerNotificacaoVideo {
 
-    @SqsListener("sqs-solicitacao-processamento")
+    // @SqsListener("sqs-solicitacao-processamento.fifo")
+    @SqsListener("https://sqs.us-east-1.amazonaws.com/717279688908/sqs-solicitacao-processamento.fifo")
     public void listen(VideoMessage messageBody) {
 
         System.out.println("📥 Mensagem recebida com sucesso: " + messageBody.videoPath());
