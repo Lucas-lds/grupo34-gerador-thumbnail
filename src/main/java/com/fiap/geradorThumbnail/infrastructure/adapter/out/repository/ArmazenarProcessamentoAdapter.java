@@ -21,7 +21,7 @@ public class ArmazenarProcessamentoAdapter implements ArmazenarProcessamento {
     public void execute(Video video) {
         var videoEntity = new VideoEntity(
             UUID.randomUUID(),
-            video.getIdUsuario(),
+            Long.parseLong(video.getIdUsuario()),
             video.getNomeArquivo(),
             video.getCaminhoFrames(),
             video.getCaminhoVideoOriginal(),

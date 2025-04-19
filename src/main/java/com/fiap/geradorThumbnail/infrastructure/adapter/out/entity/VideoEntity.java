@@ -22,7 +22,7 @@ import java.util.UUID;
 public class VideoEntity {
     @Id
     private UUID id;
-    private String idUsuario;
+    private Long idUsuario;
     private String nomeArquivo;
     private String caminhoFrames;
     private String caminhoVideoOriginal;
