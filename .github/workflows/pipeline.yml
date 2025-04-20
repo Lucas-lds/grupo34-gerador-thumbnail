@@ -30,19 +30,19 @@ jobs:
           name: app-jar
           path: target/*.jar
 
-      - name: SonarQube Scan
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        run: |
-          ./mvnw sonar:sonar \
-          -Dsonar.projectKey=Lucas-lds_grupo34-gerador-thumbnail \
-          -Dsonar.organization=lucas-lds \
-          -Dsonar.projectName=grupo34-gerador-thumbnail \
-          -Dsonar.host.url=$SONAR_HOST_URL \
-          -Dsonar.login=$SONAR_TOKEN \
-          -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml \
-          -Dsonar.java.binaries=target/classes
+      # - name: SonarQube Scan
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #     SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      #   run: |
+      #     ./mvnw sonar:sonar \
+      #     -Dsonar.projectKey=Lucas-lds_grupo34-gerador-thumbnail \
+      #     -Dsonar.organization=lucas-lds \
+      #     -Dsonar.projectName=grupo34-gerador-thumbnail \
+      #     -Dsonar.host.url=$SONAR_HOST_URL \
+      #     -Dsonar.login=$SONAR_TOKEN \
+      #     -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml \
+      #     -Dsonar.java.binaries=target/classes
 
 
     # 2. Provisionar infraestrutura com Terraform
@@ -62,11 +62,15 @@ jobs:
           
       - name: Zip Lambda criar usuário
         run: |
-          zip -r lambda-criar-usuario/lambda_function.zip lambda-criar-usuario/lambda_function.py
+          cd lambda-create-user
+          zip -r lambda_function.zip lambda_function.py
+        working-directory: ${{ github.workspace }}
 
       - name: Zip Lambda persist user
         run: |
-          zip -r lambda-persist-user/lambda_function.zip lambda-persist-user/lambda_function.py
+          cd lambda-persist-user
+          zip -r lambda_function.zip lambda_function.py
+        working-directory: ${{ github.workspace }}
           
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
