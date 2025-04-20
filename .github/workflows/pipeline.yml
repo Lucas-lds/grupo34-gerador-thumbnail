@@ -55,13 +55,10 @@ jobs:
         with:
          path: .
 
-      - name: Zip Lambda criar usuário
+      - name: Verifica os arquivos zip das Lambdas
         run: |
-            zip -r /home/runner/work/grupo34-gerador-thumbnail/grupo34-gerador-thumbnail/lambda-create-user/lambda_function.zip . -i /home/runner/work/grupo34-gerador-thumbnail/grupo34-gerador-thumbnail/lambda-create-user/lambda_function.py
-          
-      - name: Zip Lambda persist user
-        run: |
-          zip -r /home/runner/work/grupo34-gerador-thumbnail/grupo34-gerador-thumbnail/lambda-persist-user/lambda_function.zip /home/runner/work/grupo34-gerador-thumbnail/grupo34-gerador-thumbnail/lambda-persist-user/lambda_function.py
+          ls -lh lambda-create-user/lambda_function.zip
+          ls -lh lambda-persist-user/lambda_function.zip
           
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
