@@ -52,25 +52,21 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v3
-        with:
-         path: .
+        # with:
+        #  path: .
 
-      - name: Debug - mostrar estrutura de diretórios
+      - name: Diagnóstico da árvore de arquivos
         run: |
-          pwd
-          ls -R
-          
+          ls -l
+          ls -l lambda-criar-usuario
+
       - name: Zip Lambda criar usuário
         run: |
-          cd lambda-create-user
-          zip -r lambda_function.zip lambda_function.py
-        working-directory: ${{ github.workspace }}
+          zip -j lambda-criar-usuario/lambda_function.zip lambda-criar-usuario/lambda_function.py
 
       - name: Zip Lambda persist user
         run: |
-          cd lambda-persist-user
-          zip -r lambda_function.zip lambda_function.py
-        working-directory: ${{ github.workspace }}
+          zip -j lambda-persist-user/lambda_function.zip lambda-persist-user/lambda_function.py
           
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
