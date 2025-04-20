@@ -53,15 +53,15 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
-      - name: Zip Lambda criar usuário
-        run: |
-          cd lambda-criar-usuario
-          zip -r lambda_function.zip lambda_function.py
+      # - name: Zip Lambda criar usuário
+      #   run: |
+      #     cd lambda-criar-usuario
+      #     zip -r lambda_function.zip lambda_function.py
 
-      - name: Zip Lambda persist user
-        run: |
-          cd lambda-persist-user
-          zip -r lambda_function.zip lambda_function.py
+      # - name: Zip Lambda persist user
+      #   run: |
+      #     cd lambda-persist-user
+      #     zip -r lambda_function.zip lambda_function.py
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
