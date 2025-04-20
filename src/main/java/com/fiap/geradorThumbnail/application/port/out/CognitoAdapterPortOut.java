@@ -5,5 +5,5 @@ import com.fiap.geradorThumbnail.infrastructure.exception.CadastroCognitoExcepti
 import com.fiap.geradorThumbnail.infrastructure.exception.UsuarioPossuiCadastroCognito;
 
 public interface CognitoAdapterPortOut {
-    void cadastrarUsuarioCognito(UsuarioCognitoRequest usuario) throws UsuarioPossuiCadastroCognito, CadastroCognitoException;
+    String cadastrarUsuarioCognito(UsuarioCognitoRequest usuario) throws UsuarioPossuiCadastroCognito, CadastroCognitoException;
 }

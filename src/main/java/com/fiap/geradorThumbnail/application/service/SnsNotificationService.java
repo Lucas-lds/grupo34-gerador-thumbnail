@@ -16,7 +16,7 @@ public class SnsNotificationService {
     private final String topicArn;
 
     public SnsNotificationService(
-        @Value("${aws.sns.topic.arn}") String topicArn,
+        @Value("${aws.sns.topicArn}}") String topicArn,
         @Value("${aws.region}") String region
     ) {
         this.topicArn = topicArn;

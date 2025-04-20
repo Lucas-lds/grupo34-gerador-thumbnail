@@ -16,7 +16,7 @@ public class SqsListenerNotificacaoVideo implements ReceberNotificacaoVideo {
     }
 
     @Override
-    @SqsListener("sqs-solicitacao-processamento")
+    @SqsListener("https://sqs.us-east-1.amazonaws.com/717279688908/sqs-solicitacao-processamento.fifo")
     public void listen(SolicitacaoProcessamentoVideo messageBody) {
 
         System.out.println("📥 Mensagem recebida com sucesso: " + messageBody.videoPath());

@@ -17,12 +17,17 @@ public class SqsEnviarNotificacaoAdapter implements EnviarNotificacaoVideo {
 
     private final SqsAsyncClient sqsAsyncClient;
 
-    @Value("${aws.sqs.queue-url}")
-    private String queueUrl;
+    // @Value("${aws.sqs.queue-url}")
+    // private String queueUrl;
+    private String queueUrl = System.getenv("CLOUD_AWS_SQS_QUEUE_NAME_RESOLVER_QUEUES_SQS_SOLICITACAO_PROCESSAMENTO_FIFO");
 
 
     public SqsEnviarNotificacaoAdapter(SqsAsyncClient sqsAsyncClient) {
         this.sqsAsyncClient = sqsAsyncClient;
+
+        if (queueUrl == null || queueUrl.isEmpty()) {
+            throw new IllegalStateException("A variável de ambiente CLOUD_AWS_SQS_QUEUE_NAME_RESOLVER_QUEUES_SQS_SOLICITACAO_PROCESSAMENTO_FIFO não foi configurada.");
+        }    
     }
 
     @Override

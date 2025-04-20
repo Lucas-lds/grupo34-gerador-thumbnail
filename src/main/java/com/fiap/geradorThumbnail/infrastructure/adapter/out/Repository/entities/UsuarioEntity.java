@@ -15,6 +15,9 @@ public class UsuarioEntity {
     @Column(name = "nome")
     private String nome;
 
+   @Column(name = "cognito_user_id", nullable = false)
+    private String cognitoUserId;     
+
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
@@ -27,19 +30,31 @@ public class UsuarioEntity {
     public UsuarioEntity() {
     }
 
-    public UsuarioEntity(Long id, String nome, String email, String senha, String telefone) {
-        this.id = id;
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
-        this.telefone = telefone;
-    }
+public UsuarioEntity(Long id, String nome, String cognitoUserId, String email, String senha, String telefone) {
+    this.id = id;
+    this.nome = nome;
+    this.cognitoUserId = cognitoUserId;
+    this.email = email;
+    this.senha = senha;
+    this.telefone = telefone;
+}
 
     public Usuario toDomain() {
-        return new Usuario(id, nome, email, senha, telefone);
+        Usuario usuario = new Usuario(id, nome, email, senha, telefone);
+        usuario.setCognitoUserId(cognitoUserId);
+        return usuario;
     }
 
     public static UsuarioEntity fromDomain(Usuario usuario) {
-        return new UsuarioEntity(usuario.getIdUsuario(), usuario.getNome(), usuario.getEmail(), usuario.getSenha(), usuario.getTelefone());
+        return new UsuarioEntity(usuario.getIdUsuario(), usuario.getNome(), usuario.getCognitoUserId(), usuario.getEmail(), usuario.getSenha(), usuario.getTelefone());
     }
+
+    public String getCognitoUserId() {
+        return cognitoUserId;
+    }
+
+    public void setCognitoUserId(String cognitoUserId) {
+        this.cognitoUserId = cognitoUserId;
+    }
+
 }

@@ -93,7 +93,7 @@ public class InfrastructureAdaptersBDDTest {
 
     @Test
     public void testUsuarioEntity_toDomainAndFromDomain() {
-        UsuarioEntity entity = new UsuarioEntity(1L, "Nome", "email@example.com", "senha", "123456789");
+        UsuarioEntity entity = new UsuarioEntity(1L, "Nome", "cognitoUserId", "email@example.com", "senha", "123456789");
         var domain = entity.toDomain();
 
         assertEquals(entity.toDomain().getIdUsuario(), domain.getIdUsuario());
