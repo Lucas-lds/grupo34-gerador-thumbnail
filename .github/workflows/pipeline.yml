@@ -52,8 +52,8 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v3
-        # with:
-        #  path: .
+        with:
+         path: .
 
       - name: Diagnóstico da árvore de arquivos
         run: |
@@ -62,11 +62,11 @@ jobs:
 
       - name: Zip Lambda criar usuário
         run: |
-          zip -j lambda-criar-usuario/lambda_function.zip lambda-criar-usuario/lambda_function.py
+          zip -r /home/runner/work/grupo34-gerador-thumbnail/grupo34-gerador-thumbnail/lambda-criar-usuario/lambda_function.zip /home/runner/work/grupo34-gerador-thumbnail/grupo34-gerador-thumbnail/lambda-criar-usuario/lambda_function.py
 
       - name: Zip Lambda persist user
         run: |
-          zip -j lambda-persist-user/lambda_function.zip lambda-persist-user/lambda_function.py
+          zip -r /home/runner/work/grupo34-gerador-thumbnail/grupo34-gerador-thumbnail/lambda-persist-user/lambda_function.zip /home/runner/work/grupo34-gerador-thumbnail/grupo34-gerador-thumbnail/lambda-persist-user/lambda_function.py
           
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
