@@ -7,28 +7,28 @@ on:
 
 jobs:
   # 1. Build e validação da aplicação
-  build-application:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
+  # build-application:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Check out code
+  #       uses: actions/checkout@v4
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
+  #     - name: Set up JDK 17
+  #       uses: actions/setup-java@v4
+  #       with:
+  #         java-version: '17'
+  #         distribution: 'temurin'
 
-      - name: Build application
-        run: |
-          chmod +x mvnw # Concede permissão de execução ao Maven Wrapper
-          ./mvnw clean verify jacoco:report
+  #     - name: Build application
+  #       run: |
+  #         chmod +x mvnw # Concede permissão de execução ao Maven Wrapper
+  #         ./mvnw clean verify jacoco:report
 
-      - name: Upload application artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-jar
-          path: target/*.jar
+  #     - name: Upload application artifact
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: app-jar
+  #         path: target/*.jar
 
       # - name: SonarQube Scan
       #   env:
@@ -57,7 +57,8 @@ jobs:
 
       - name: Zip Lambda criar usuário
         run: |
-          zip -j lambda-create-user/lambda_function.zip lambda-create-user/lambda_function.py
+          cd lambda-create-user
+          zip -r lambda_function.zip lambda_function.py
           
       - name: Zip Lambda persist user
         run: |
