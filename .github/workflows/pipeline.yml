@@ -62,8 +62,8 @@ jobs:
 
       - name: Zip Lambda criar usuário
         run: |
-          zip -r /home/runner/work/grupo34-gerador-thumbnail/grupo34-gerador-thumbnail/lambda-criar-usuario/lambda_function.zip /home/runner/work/grupo34-gerador-thumbnail/grupo34-gerador-thumbnail/lambda-criar-usuario/lambda_function.py
-
+          zip -j lambda-create-user/lambda_function.zip lambda-create-user/lambda_function.py
+          
       - name: Zip Lambda persist user
         run: |
           zip -r /home/runner/work/grupo34-gerador-thumbnail/grupo34-gerador-thumbnail/lambda-persist-user/lambda_function.zip /home/runner/work/grupo34-gerador-thumbnail/grupo34-gerador-thumbnail/lambda-persist-user/lambda_function.py
