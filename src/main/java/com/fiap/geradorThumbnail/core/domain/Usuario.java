@@ -6,6 +6,7 @@ public class Usuario {
     private String email;
     private String senha;
     private String telefone;
+    private String cognitoUserId;
 
     public Usuario(Long idUsuario, String nome, String email, String senha, String telefone) {
         this.idUsuario = idUsuario;
@@ -18,6 +19,14 @@ public class Usuario {
     public Usuario(Long idUsuario){
         this.idUsuario = idUsuario;
     }
+
+    public String getCognitoUserId() {
+        return cognitoUserId;
+    }
+
+    public void setCognitoUserId(String cognitoUserId) {
+        this.cognitoUserId = cognitoUserId;
+    }    
 
     public Long getIdUsuario() {
         return idUsuario;

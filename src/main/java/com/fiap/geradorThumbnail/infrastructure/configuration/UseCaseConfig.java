@@ -4,14 +4,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.fiap.geradorThumbnail.application.port.out.UsuarioServicePortOut;
-import com.fiap.geradorThumbnail.application.port.out.usecase.UsuarioUseCasePortOut;
-import com.fiap.geradorThumbnail.core.usecase.UsuarioUseCase;
+import com.fiap.geradorThumbnail.core.usecases.UsuarioUseCase;
 
 @Configuration
 public class UseCaseConfig {
     
     @Bean
-    public UsuarioUseCasePortOut usuarioUseCase(UsuarioServicePortOut usuarioService) {
-        return new UsuarioUseCase(usuarioService);
+    public UsuarioUseCase usuarioUseCase(UsuarioServicePortOut usuarioService) {
+        return new com.fiap.geradorThumbnail.application.usecases.UsuarioUseCase(usuarioService);
     }
 }

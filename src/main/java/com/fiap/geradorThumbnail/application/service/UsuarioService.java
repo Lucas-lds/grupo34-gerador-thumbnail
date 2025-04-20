@@ -7,7 +7,7 @@ import com.fiap.geradorThumbnail.application.port.out.UsuarioAdapterPortOut;
 import com.fiap.geradorThumbnail.application.port.out.UsuarioServicePortOut;
 import com.fiap.geradorThumbnail.application.port.out.ValidarLambdaPortOut;
 import com.fiap.geradorThumbnail.core.domain.Usuario;
-import com.fiap.geradorThumbnail.core.dto.UsuarioCognitoRequestDTO;
+import com.fiap.geradorThumbnail.core.dto.UsuarioCognitoRequest;
 
 @Service
 public class UsuarioService implements UsuarioServicePortOut {
@@ -25,8 +25,12 @@ public class UsuarioService implements UsuarioServicePortOut {
 
     @Override
     public Usuario cadastrar(Usuario usuario) {
-        cognitoAdapterPortOut.cadastrarUsuarioCognito(new UsuarioCognitoRequestDTO(usuario.getNome(), usuario.getEmail(), usuario.getSenha(),
-                usuario.getTelefone()));
+        // 1. Cria usuário no Cognito e obtém o cognito_user_id
+        String cognitoUserId = cognitoAdapterPortOut.cadastrarUsuarioCognito(new UsuarioCognitoRequest(usuario.getNome(), usuario.getEmail(), usuario.getSenha(),
+            usuario.getTelefone()));
+
+        // 2. Preenche o campo cognito_user_id no objeto Usuario
+        usuario.setCognitoUserId(cognitoUserId);
 
         return usuarioAdapterPortOut.cadastrar(usuario);
     }

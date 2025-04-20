@@ -1,13 +1,10 @@
 package com.fiap.geradorThumbnail.infrastructure.adapter.out;
 
-import java.net.URI;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.fiap.geradorThumbnail.application.port.out.CognitoAdapterPortOut;
-import com.fiap.geradorThumbnail.core.dto.UsuarioCognitoRequestDTO;
-import com.fiap.geradorThumbnail.core.dto.UsuarioCognitoResponseDTO;
+import com.fiap.geradorThumbnail.core.dto.UsuarioCognitoRequest;
 import com.fiap.geradorThumbnail.infrastructure.exception.CadastroCognitoException;
 import com.fiap.geradorThumbnail.infrastructure.exception.UsuarioPossuiCadastroCognito;
 
@@ -31,13 +28,13 @@ public class CognitoAdapterOut implements CognitoAdapterPortOut {
 
     public CognitoAdapterOut() {
         this.cognitoClient = CognitoIdentityProviderClient.builder()
-                .region(Region.US_EAST_2)
+                .region(Region.US_EAST_1)
                 .credentialsProvider(DefaultCredentialsProvider.create())
                 .build();
     }
 
     @Override
-    public void cadastrarUsuarioCognito(UsuarioCognitoRequestDTO usuario) {
+    public String cadastrarUsuarioCognito(UsuarioCognitoRequest usuario) {
         try {
             AdminCreateUserRequest createUserRequest = AdminCreateUserRequest.builder()
                     .userPoolId(userPoolId)
@@ -54,6 +51,27 @@ public class CognitoAdapterOut implements CognitoAdapterPortOut {
                     .build();
 
             cognitoClient.adminCreateUser(createUserRequest);
+
+            // Define a senha como permanente para não forçar troca no primeiro login
+            cognitoClient.adminSetUserPassword(builder -> builder
+                .userPoolId(userPoolId)
+                .username(usuario.email())
+                .password(usuario.senha())
+                .permanent(true)
+            );
+
+            // Recupera o sub (cognito_user_id)
+            var getUserResponse = cognitoClient.adminGetUser(builder -> builder
+                .userPoolId(userPoolId)
+                .username(usuario.email())
+            );
+            String cognitoUserId = getUserResponse.userAttributes().stream()
+                .filter(attr -> attr.name().equals("sub"))
+                .findFirst()
+                .get()
+                .value();
+
+            return cognitoUserId;
         }
         catch (UsernameExistsException e){
             throw new UsuarioPossuiCadastroCognito("O email já está cadastrado no sistema", usuario.email());

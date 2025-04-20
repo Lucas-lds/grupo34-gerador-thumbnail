@@ -2,34 +2,38 @@ package com.fiap.geradorThumbnail.infrastructure.adapter.out.repository;
 
 import com.fiap.geradorThumbnail.application.port.out.ArmazenarProcessamento;
 import com.fiap.geradorThumbnail.core.domain.Video;
-import com.fiap.geradorThumbnail.infrastructure.adapter.out.entity.VideoEntity;
-import com.fiap.geradorThumbnail.infrastructure.adapter.out.repository.entities.enums.StatusProcessamento;
+import com.fiap.geradorThumbnail.infrastructure.adapter.out.repository.entities.ProcessamentoEntity;
+import com.fiap.geradorThumbnail.infrastructure.adapter.out.repository.repositories.ProcessamentoRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class ArmazenarProcessamentoAdapter implements ArmazenarProcessamento {
 
-    private final VideoRepository repository;
+    private final ProcessamentoRepository repository;
 
-    public ArmazenarProcessamentoAdapter(VideoRepository repository) {
+    public ArmazenarProcessamentoAdapter(ProcessamentoRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public void execute(Video video) {
-        var videoEntity = new VideoEntity(
-            UUID.randomUUID(),
-            Long.parseLong(video.getIdUsuario()),
-            video.getNomeArquivo(),
-            video.getCaminhoFrames(),
-            video.getCaminhoVideoOriginal(),
-            video.getCaminhoZip(),
-            video.getQuantidadeFrames(),
-            StatusProcessamento.PROCESSANDO
-        );
-        repository.save(videoEntity);
-        System.out.println("Video armazenado no banco de dados com sucesso!");
+    public List<Long> execute(List<Video> videos) {
+        List<Long> idsProcessamentos = new ArrayList<>();
+
+        for (Video video : videos) {
+            var processamento = new ProcessamentoEntity(
+                    video.getIdUsuario(),
+                    video.getCaminhoVideo(),
+                    video.getStatusProcessamento().toEntity()
+            );
+
+            var processamentoSalvo = repository.save(processamento);
+            System.out.println("✅ Processamento armazenado com sucesso: " + processamentoSalvo.getId());
+            idsProcessamentos.add(processamentoSalvo.getId());
+        }
+
+        return idsProcessamentos;
     }
 }

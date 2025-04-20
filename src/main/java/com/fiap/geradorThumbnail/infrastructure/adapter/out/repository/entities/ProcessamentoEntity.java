@@ -1,12 +1,15 @@
 package com.fiap.geradorThumbnail.infrastructure.adapter.out.repository.entities;
 
-import com.fiap.geradorThumbnail.infrastructure.adapter.out.repository.entities.enums.StatusProcessamento;
+import com.fiap.geradorThumbnail.infrastructure.adapter.out.repository.entities.enums.StatusProcessamentoEntity;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "processamentos")
+@Getter
+@Table(name = "tb_processamentos")
 public class ProcessamentoEntity {
 
     @Id
@@ -19,84 +22,29 @@ public class ProcessamentoEntity {
     @Column(name = "nome_video", nullable = false)
     private String nomeVideo;
 
+    @Setter
     @Enumerated(EnumType.STRING)
     @Column(name = "status_processamento", nullable = false, length = 32)
-    private StatusProcessamento status;
+    private StatusProcessamentoEntity status;
 
-    @Column(name = "caminho_frames", nullable = false)
-    private String caminhoFrames;
+    @Column(name = "criado_em", updatable = false)
+    private LocalDateTime criadoEm = LocalDateTime.now();
 
-    @Column(name = "caminho_video_original", nullable = false)
-    private String caminhoVideoOriginal;
-
-    @Column(name = "caminho_zip", nullable = false)
-    private String caminhoZip;
-
-    @Column(name = "quantidade_frames", nullable = false)
-    private Integer quantidadeFrames;
-
-    @Column(name = "criado_em", updatable = false, insertable = false)
-    private LocalDateTime criadoEm;
-
-    public ProcessamentoEntity(Long id, String idCliente, String nomeVideo, StatusProcessamento status, 
-                             String caminhoFrames, String caminhoVideoOriginal, String caminhoZip,
-                             Integer quantidadeFrames, LocalDateTime criadoEm) {
+    public ProcessamentoEntity(Long id, String idCliente, String nomeVideo, StatusProcessamentoEntity status, LocalDateTime criadoEm) {
         this.id = id;
         this.idCliente = idCliente;
         this.nomeVideo = nomeVideo;
         this.status = status;
-        this.caminhoFrames = caminhoFrames;
-        this.caminhoVideoOriginal = caminhoVideoOriginal;
-        this.caminhoZip = caminhoZip;
-        this.quantidadeFrames = quantidadeFrames;
         this.criadoEm = criadoEm;
     }
 
-    public ProcessamentoEntity(String idCliente, String nomeVideo, StatusProcessamento status,
-                             String caminhoFrames, String caminhoVideoOriginal, String caminhoZip,
-                             Integer quantidadeFrames) {
+    public ProcessamentoEntity(String idCliente, String nomeVideo, StatusProcessamentoEntity status) {
         this.idCliente = idCliente;
         this.nomeVideo = nomeVideo;
         this.status = status;
-        this.caminhoFrames = caminhoFrames;
-        this.caminhoVideoOriginal = caminhoVideoOriginal;
-        this.caminhoZip = caminhoZip;
-        this.quantidadeFrames = quantidadeFrames;
     }
 
     public ProcessamentoEntity() {
     }
 
-    // Getters e Setters para os novos campos
-    public String getCaminhoFrames() {
-        return caminhoFrames;
-    }
-
-    public void setCaminhoFrames(String caminhoFrames) {
-        this.caminhoFrames = caminhoFrames;
-    }
-
-    public String getCaminhoVideoOriginal() {
-        return caminhoVideoOriginal;
-    }
-
-    public void setCaminhoVideoOriginal(String caminhoVideoOriginal) {
-        this.caminhoVideoOriginal = caminhoVideoOriginal;
-    }
-
-    public String getCaminhoZip() {
-        return caminhoZip;
-    }
-
-    public void setCaminhoZip(String caminhoZip) {
-        this.caminhoZip = caminhoZip;
-    }
-
-    public Integer getQuantidadeFrames() {
-        return quantidadeFrames;
-    }
-
-    public void setQuantidadeFrames(Integer quantidadeFrames) {
-        this.quantidadeFrames = quantidadeFrames;
-    }
 }

@@ -52,7 +52,7 @@ resource "kubernetes_deployment" "video2frames-api" {
 
         container {
           name  = "video2frames"
-          image = "717279688908.dkr.ecr.us-east-1.amazonaws.com/repositorio:v5" # Substitua pela imagem correta
+          image = "717279688908.dkr.ecr.us-east-1.amazonaws.com/repositorio:v10" # Substitua pela imagem correta
 
           # Passando variáveis de ambiente do Cognito
           env {

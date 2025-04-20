@@ -80,6 +80,15 @@ resource "aws_iam_policy" "eks_node_policy" {
         ],
         Resource = "*",
       },
+      {
+        Effect = "Allow",
+        Action = [
+          "cognito-idp:AdminCreateUser",
+          "cognito-idp:AdminSetUserPassword",
+          "cognito-idp:AdminGetUser"
+        ],
+        Resource = "*",
+      },      
     ],
   })
 }
