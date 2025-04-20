@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  1. Build e validação da aplicação
+  # 1. Build e validação da aplicação
   build-application:
     runs-on: ubuntu-latest
     steps:
