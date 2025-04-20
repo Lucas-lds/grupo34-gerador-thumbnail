@@ -55,11 +55,6 @@ jobs:
         with:
          path: .
 
-      - name: Diagnóstico da árvore de arquivos
-        run: |
-          ls -l
-          ls -l lambda-criar-usuario
-
       - name: Zip Lambda criar usuário
         run: |
           zip -j lambda-create-user/lambda_function.zip lambda-create-user/lambda_function.py
