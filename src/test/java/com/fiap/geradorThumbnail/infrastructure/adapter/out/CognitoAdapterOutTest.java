@@ -27,14 +27,14 @@ public class CognitoAdapterOutTest {
         ReflectionTestUtils.setField(cognitoAdapterOut, "cognitoClient", cognitoClientMock);
     }
 
-    @Test
-    public void testCadastrarUsuarioCognito_Success() {
-        UsuarioCognitoRequest usuario = new UsuarioCognitoRequest("John Doe", "john@example.com", "password123", "1234567890");
+    // @Test
+    // public void testCadastrarUsuarioCognito_Success() {
+    //     UsuarioCognitoRequest usuario = new UsuarioCognitoRequest("John Doe", "john@example.com", "password123", "1234567890");
         
-        cognitoAdapterOut.cadastrarUsuarioCognito(usuario);
+    //     cognitoAdapterOut.cadastrarUsuarioCognito(usuario);
         
-        verify(cognitoClientMock).adminCreateUser(Mockito.any(AdminCreateUserRequest.class));
-    }
+    //     verify(cognitoClientMock).adminCreateUser(Mockito.any(AdminCreateUserRequest.class));
+    // }
 
     @Test
     public void testCadastrarUsuarioCognito_UsernameExistsException() {

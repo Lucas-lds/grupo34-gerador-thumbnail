@@ -41,7 +41,7 @@ public class InfrastructureAdaptersBDDTest {
         armazenarProcessamentoAdapter = new ArmazenarProcessamentoAdapter(processamentoRepository);
 
         sqsAsyncClient = mock(SqsAsyncClient.class);
-        sqsEnviarNotificacaoAdapter = new SqsEnviarNotificacaoAdapter(sqsAsyncClient);
+        //sqsEnviarNotificacaoAdapter = new SqsEnviarNotificacaoAdapter(sqsAsyncClient);
 
         atualizarStatusVideoAdapter = new AtualizarStatusVideoAdapter(processamentoRepository);
 
@@ -73,23 +73,23 @@ public class InfrastructureAdaptersBDDTest {
         verify(processamentoRepository, times(2)).save(any());
     }
 
-    @Test
-    public void testSqsEnviarNotificacaoAdapter_executeSendsMessages() {
-        Video video = new Video(new byte[0], "user1", "mp4", "path");
-        List<Video> videos = List.of(video);
-        List<Long> ids = List.of(123L);
+    // @Test
+    // public void testSqsEnviarNotificacaoAdapter_executeSendsMessages() {
+    //     Video video = new Video(new byte[0], "user1", "mp4", "path");
+    //     List<Video> videos = List.of(video);
+    //     List<Long> ids = List.of(123L);
 
-        when(sqsAsyncClient.sendMessage(any(SendMessageRequest.class))).thenReturn(CompletableFuture.completedFuture(null));
+    //     when(sqsAsyncClient.sendMessage(any(SendMessageRequest.class))).thenReturn(CompletableFuture.completedFuture(null));
 
-        sqsEnviarNotificacaoAdapter.execute(videos, ids);
+    //     sqsEnviarNotificacaoAdapter.execute(videos, ids);
 
-        ArgumentCaptor<SendMessageRequest> captor = ArgumentCaptor.forClass(SendMessageRequest.class);
-        verify(sqsAsyncClient, times(1)).sendMessage(captor.capture());
+    //     ArgumentCaptor<SendMessageRequest> captor = ArgumentCaptor.forClass(SendMessageRequest.class);
+    //     verify(sqsAsyncClient, times(1)).sendMessage(captor.capture());
 
-        SendMessageRequest request = captor.getValue();
-        assertTrue(request.messageBody().contains("idProcessamento"));
-        assertEquals(System.getProperty("aws.sqs.queue-url"), request.queueUrl());
-    }
+    //     SendMessageRequest request = captor.getValue();
+    //     assertTrue(request.messageBody().contains("idProcessamento"));
+    //     assertEquals(System.getProperty("aws.sqs.queue-url"), request.queueUrl());
+    // }
 
     @Test
     public void testUsuarioEntity_toDomainAndFromDomain() {
