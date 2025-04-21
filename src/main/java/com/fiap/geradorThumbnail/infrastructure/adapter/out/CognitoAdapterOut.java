@@ -20,17 +20,23 @@ public class CognitoAdapterOut implements CognitoAdapterPortOut {
 
     private final CognitoIdentityProviderClient cognitoClient;
     
-    @Value("${aws.cognito.userPoolId:}")
-    private String userPoolId;
+    private final String userPoolId;
 
     @Value("${aws.cognito.clientId}")
     private String clientId;
 
     public CognitoAdapterOut() {
-        this.cognitoClient = CognitoIdentityProviderClient.builder()
+        this(CognitoIdentityProviderClient.builder()
                 .region(Region.US_EAST_1)
                 .credentialsProvider(DefaultCredentialsProvider.create())
-                .build();
+                .build(),
+            System.getenv("AWS_COGNITO_USER_POOL_ID"));
+    }
+
+    // Constructor for testing
+    public CognitoAdapterOut(CognitoIdentityProviderClient cognitoClient, String userPoolId) {
+        this.cognitoClient = cognitoClient;
+        this.userPoolId = userPoolId;
     }
 
     @Override
@@ -53,17 +59,21 @@ public class CognitoAdapterOut implements CognitoAdapterPortOut {
             cognitoClient.adminCreateUser(createUserRequest);
 
             // Define a senha como permanente para não forçar troca no primeiro login
-            cognitoClient.adminSetUserPassword(builder -> builder
+            cognitoClient.adminSetUserPassword(
+                software.amazon.awssdk.services.cognitoidentityprovider.model.AdminSetUserPasswordRequest.builder()
                 .userPoolId(userPoolId)
                 .username(usuario.email())
                 .password(usuario.senha())
                 .permanent(true)
+                .build()
             );
 
             // Recupera o sub (cognito_user_id)
-            var getUserResponse = cognitoClient.adminGetUser(builder -> builder
+            var getUserResponse = cognitoClient.adminGetUser(
+                software.amazon.awssdk.services.cognitoidentityprovider.model.AdminGetUserRequest.builder()
                 .userPoolId(userPoolId)
                 .username(usuario.email())
+                .build()
             );
             String cognitoUserId = getUserResponse.userAttributes().stream()
                 .filter(attr -> attr.name().equals("sub"))

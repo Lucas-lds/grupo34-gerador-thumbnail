@@ -5,56 +5,76 @@ import com.fiap.geradorThumbnail.infrastructure.exception.CadastroCognitoExcepti
 import com.fiap.geradorThumbnail.infrastructure.exception.UsuarioPossuiCadastroCognito;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.test.util.ReflectionTestUtils;
+import org.mockito.ArgumentCaptor;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminCreateUserRequest;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminGetUserRequest;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminGetUserResponse;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminSetUserPasswordRequest;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.AttributeType;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.UsernameExistsException;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verify;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 public class CognitoAdapterOutTest {
 
-    private CognitoAdapterOut cognitoAdapterOut;
-    private CognitoIdentityProviderClient cognitoClientMock;
+    private CognitoIdentityProviderClient cognitoClient;
+    private CognitoAdapterOut adapter;
 
     @BeforeEach
-    public void setUp() {
-        cognitoClientMock = Mockito.mock(CognitoIdentityProviderClient.class);
-        cognitoAdapterOut = new CognitoAdapterOut(); // Use default constructor
-        // Use reflection to set the mocked client
-        ReflectionTestUtils.setField(cognitoAdapterOut, "cognitoClient", cognitoClientMock);
-    }
-
-    // @Test
-    // public void testCadastrarUsuarioCognito_Success() {
-    //     UsuarioCognitoRequest usuario = new UsuarioCognitoRequest("John Doe", "john@example.com", "password123", "1234567890");
-        
-    //     cognitoAdapterOut.cadastrarUsuarioCognito(usuario);
-        
-    //     verify(cognitoClientMock).adminCreateUser(Mockito.any(AdminCreateUserRequest.class));
-    // }
-
-    @Test
-    public void testCadastrarUsuarioCognito_UsernameExistsException() {
-        UsuarioCognitoRequest usuario = new UsuarioCognitoRequest("John Doe", "john@example.com", "password123", "1234567890");
-        
-        Mockito.doThrow(UsernameExistsException.class).when(cognitoClientMock).adminCreateUser(Mockito.any(AdminCreateUserRequest.class));
-
-        assertThrows(UsuarioPossuiCadastroCognito.class, () -> {
-            cognitoAdapterOut.cadastrarUsuarioCognito(usuario);
-        });
+    void setup() {
+        cognitoClient = mock(CognitoIdentityProviderClient.class);
+        adapter = new CognitoAdapterOut(cognitoClient, "test-pool-id");
     }
 
     @Test
-    public void testCadastrarUsuarioCognito_GeneralException() {
-        UsuarioCognitoRequest usuario = new UsuarioCognitoRequest("John Doe", "john@example.com", "password123", "1234567890");
-        
-        Mockito.doThrow(new RuntimeException("Some error")).when(cognitoClientMock).adminCreateUser(Mockito.any(AdminCreateUserRequest.class));
+    void testCadastrarUsuarioCognitoSuccess() {
+        UsuarioCognitoRequest request = new UsuarioCognitoRequest("John Doe", "john@example.com", "password", "+1234567890");
 
-        assertThrows(CadastroCognitoException.class, () -> {
-            cognitoAdapterOut.cadastrarUsuarioCognito(usuario);
-        });
+        when(cognitoClient.adminCreateUser(any(AdminCreateUserRequest.class))).thenReturn(null);
+        when(cognitoClient.adminSetUserPassword(any(AdminSetUserPasswordRequest.class))).thenReturn(null);
+        when(cognitoClient.adminGetUser(any(AdminGetUserRequest.class))).thenReturn(
+                AdminGetUserResponse.builder()
+                        .userAttributes(AttributeType.builder().name("sub").value("cognito-user-id-123").build())
+                        .build()
+        );
+
+        String cognitoUserId = adapter.cadastrarUsuarioCognito(request);
+
+        assertThat(cognitoUserId).isEqualTo("cognito-user-id-123");
+
+        ArgumentCaptor<AdminCreateUserRequest> captor = ArgumentCaptor.forClass(AdminCreateUserRequest.class);
+        verify(cognitoClient).adminCreateUser(captor.capture());
+        AdminCreateUserRequest capturedRequest = captor.getValue();
+        assertThat(capturedRequest.userPoolId()).isEqualTo("test-pool-id");
+        assertThat(capturedRequest.username()).isEqualTo("john@example.com");
+    }
+
+    @Test
+    void testCadastrarUsuarioCognitoUsernameExists() {
+        UsuarioCognitoRequest request = new UsuarioCognitoRequest("John Doe", "john@example.com", "password", "+1234567890");
+
+        doThrow(UsernameExistsException.builder().message("User exists").build())
+                .when(cognitoClient).adminCreateUser(any(AdminCreateUserRequest.class));
+
+        assertThatThrownBy(() -> adapter.cadastrarUsuarioCognito(request))
+                .isInstanceOf(UsuarioPossuiCadastroCognito.class)
+                .hasMessageContaining("O email já está cadastrado no sistema");
+    }
+
+    @Test
+    void testCadastrarUsuarioCognitoOtherException() {
+        UsuarioCognitoRequest request = new UsuarioCognitoRequest("John Doe", "john@example.com", "password", "+1234567890");
+
+        doThrow(new RuntimeException("AWS error"))
+                .when(cognitoClient).adminCreateUser(any(AdminCreateUserRequest.class));
+
+        assertThatThrownBy(() -> adapter.cadastrarUsuarioCognito(request))
+                .isInstanceOf(CadastroCognitoException.class)
+                .hasMessageContaining("Falha ao cadastrar usuário no Cognito");
     }
 }
