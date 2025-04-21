@@ -26,21 +26,18 @@ public class ThumbnailController {
     private final SalvarVideoUseCase salvarVideoUseCase;
     private final BuscarThumbnailsZipUseCase buscarThumbnailsZipUseCaseq;
     private final BuscarStatusProcessamentoUseCase buscarStatusProcessamentoUseCase;
-    private final SnsNotificationService snsService;
 
     public ThumbnailController(SalvarVideoUseCase salvarVideoUseCase, BuscarThumbnailsZipUseCase buscarThumbnailsZipUseCaseq, BuscarStatusProcessamentoUseCase buscarStatusProcessamentoUseCase, 
     SnsNotificationService snsService) {
         this.salvarVideoUseCase = salvarVideoUseCase;
         this.buscarThumbnailsZipUseCaseq = buscarThumbnailsZipUseCaseq;
         this.buscarStatusProcessamentoUseCase = buscarStatusProcessamentoUseCase;
-        this.snsService = snsService;
     }
 
     @PostMapping(value = "/enviar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void enviarMensagem(@Parameter(description = "Vídeos para processar", content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE, schema = @Schema(type = "string", format = "binary"))) @RequestPart("videos") List<MultipartFile> videos, @RequestPart("idUsuario") String idUsuario) throws IOException {
         VideoRequest videoRequest = new VideoRequest(videos, idUsuario);
         salvarVideoUseCase.executar(videoRequest.toDomain());
-        snsService.sendNotification("Processamento do vídeo finalizado.", "Thumbnail Generator");
     }
 
     @GetMapping("/download")

@@ -2,6 +2,7 @@ package com.fiap.geradorThumbnail.infrastructure.configuration;
 
 import com.fiap.geradorThumbnail.application.port.out.*;
 import com.fiap.geradorThumbnail.application.service.SalvarVideoService;
+import com.fiap.geradorThumbnail.application.service.SnsNotificationService;
 import com.fiap.geradorThumbnail.application.service.ProcessarVideoService;
 import com.fiap.geradorThumbnail.core.usecases.SalvarVideoUseCase;
 import com.fiap.geradorThumbnail.core.usecases.ProcessarVideoUseCase;
@@ -17,7 +18,8 @@ public class UseCaseConfiguration {
     }
 
     @Bean
-    public ProcessarVideoUseCase processarVideoUseCase(DeletarVideo deletarVideo, AtualizarStatusVideo atualizarStatusVideo, GerarThumbnail gerarThumbnail) {
-        return new ProcessarVideoService(deletarVideo, atualizarStatusVideo, gerarThumbnail);
+    public ProcessarVideoUseCase processarVideoUseCase(DeletarVideo deletarVideo, AtualizarStatusVideo atualizarStatusVideo, GerarThumbnail gerarThumbnail,
+    SnsNotificationService snsService) {
+        return new ProcessarVideoService(deletarVideo, atualizarStatusVideo, gerarThumbnail, snsService);
     }
 }

@@ -12,11 +12,14 @@ public class ProcessarVideoService implements ProcessarVideoUseCase {
     private final DeletarVideo deletarVideo;
     private final AtualizarStatusVideo atualizarStatusVideo;
     private final GerarThumbnail gerarThumbnail;
+    private final SnsNotificationService snsService;
 
-    public ProcessarVideoService(DeletarVideo deletarVideo, AtualizarStatusVideo atualizarStatusVideo, GerarThumbnail gerarThumbnail) {
+    public ProcessarVideoService(DeletarVideo deletarVideo, AtualizarStatusVideo atualizarStatusVideo, GerarThumbnail gerarThumbnail, 
+    SnsNotificationService snsService) {
         this.deletarVideo = deletarVideo;
         this.atualizarStatusVideo = atualizarStatusVideo;
         this.gerarThumbnail = gerarThumbnail;
+        this.snsService = snsService;
     }
 
     @Override
@@ -27,6 +30,7 @@ public class ProcessarVideoService implements ProcessarVideoUseCase {
             atualizarStatusVideo.execute(StatusProcessamento.FINALIZADO, processamentoVideo.idProcessamento());
         } catch (Exception e) {
             atualizarStatusVideo.execute(StatusProcessamento.ERRO, processamentoVideo.idProcessamento());
+            snsService.sendNotification("Erro ao processar o vídeo: " + processamentoVideo.nomeVideo(), "Thumbnail Generator");
             throw e;
         } finally {
             deletarVideo.execute(processamentoVideo.nomeVideo());

@@ -20,6 +20,7 @@ import software.amazon.awssdk.services.sns.model.PublishResponse;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @DisplayName("BDD Tests for Services: ProcessarVideoService, UsuarioService, SnsNotificationService, SalvarVideoService")
@@ -33,13 +34,15 @@ public class ServicesBDDTest {
         private AtualizarStatusVideo atualizarStatusVideo;
         private GerarThumbnail gerarThumbnail;
         private ProcessarVideoService service;
+        private SnsNotificationService snsService;
 
         @BeforeEach
         void setup() {
             deletarVideo = mock(DeletarVideo.class);
             atualizarStatusVideo = mock(AtualizarStatusVideo.class);
             gerarThumbnail = mock(GerarThumbnail.class);
-            service = new ProcessarVideoService(deletarVideo, atualizarStatusVideo, gerarThumbnail);
+            snsService = mock(SnsNotificationService.class);
+            service = new ProcessarVideoService(deletarVideo, atualizarStatusVideo, gerarThumbnail, snsService);
         }
 
         @Test
