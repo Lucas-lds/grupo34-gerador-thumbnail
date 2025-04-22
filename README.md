@@ -107,7 +107,7 @@ A solução adota o Domain Driven Design (DDD) para entender e estruturar o dom�
 Como parte da documentação, foram desenvolvidos diversos artefatos para apoiar a equipe, incluindo:
 - [🧠 Event Storming](https://miro.com/app/board/uXjVKxGC68M=/)  
 - [📷 AWS](/documents/AWS/infra-aws-hackaton.jpg)
-- [🎥 Vídeo](www.youtube.com/watch?v=WI6FAjISwro&feature=youtu.be)
+- [🎥 Vídeo](https://youtu.be/WI6FAjISwro)
 - [📩 Collection](collection.json)
 - [🧰 Script BD](docker/init.sql)
 - [☁️ SonarQube](https://sonarcloud.io/project/overview?id=Lucas-lds_grupo34-gerador-thumbnail)
