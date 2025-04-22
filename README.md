@@ -1,4 +1,3 @@
-![image](https://github.com/user-attachments/assets/7850084c-ccbd-4030-9f59-18710fa19acf)
 ## FIAP Pós-Tech – Hackathon - Desafio
 <h1 align="center"> Software Architecture | Grupo 34 – 8SOAT</h1>
 
@@ -212,6 +211,7 @@ git clone https://github.com/Lucas-lds/grupo34-gerador-thumbnail.git
     ```
 
     ### ☁️ SonarQube
+    ![image](https://github.com/user-attachments/assets/7850084c-ccbd-4030-9f59-18710fa19acf)
 
     - Cobertura de Testes com BDD:
     - ![image](https://github.com/user-attachments/assets/246bdb9f-ad9b-400a-9fc2-1e00c277bc13)
