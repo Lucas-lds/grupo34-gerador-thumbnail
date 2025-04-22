@@ -108,8 +108,8 @@ A solução adota o Domain Driven Design (DDD) para entender e estruturar o dom�
 Como parte da documentação, foram desenvolvidos diversos artefatos para apoiar a equipe, incluindo:
 - [🧠 Event Storming](https://miro.com/app/board/uXjVKxGC68M=/)  
 - [📷 AWS](/documents/AWS/infra-aws-hackaton.jpg)
-- [🎥 Vídeo](?)
-- [📩 Collection](?)
+- [🎥 Vídeo](https://drive.google.com/file/d/19WEjt0IKTeJajN82UiRN8UGVSDA_Tzy2/view?usp=sharing)
+- [📩 Collection](collection.json)
  
 ### 💻 Instalação
 
