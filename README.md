@@ -110,7 +110,7 @@ Como parte da documentação, foram desenvolvidos diversos artefatos para apoiar
 - [🎥 Vídeo](https://drive.google.com/file/d/19WEjt0IKTeJajN82UiRN8UGVSDA_Tzy2/view?usp=sharing)
 - [📩 Collection](collection.json)
 - [🧰 Script BD](docker/init.sql)
-- [☁️ SonarQube]([docker/init.sql](https://sonarcloud.io/project/overview?id=Lucas-lds_grupo34-gerador-thumbnail))
+- [☁️ SonarQube](https://sonarcloud.io/project/overview?id=Lucas-lds_grupo34-gerador-thumbnail)
  
 ### 💻 Instalação
 
