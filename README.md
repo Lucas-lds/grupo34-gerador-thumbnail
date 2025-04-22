@@ -1,4 +1,4 @@
-
+![image](https://github.com/user-attachments/assets/7850084c-ccbd-4030-9f59-18710fa19acf)
 ## FIAP Pós-Tech – Hackathon - Desafio
 <h1 align="center"> Software Architecture | Grupo 34 – 8SOAT</h1>
 
@@ -111,6 +111,7 @@ Como parte da documentação, foram desenvolvidos diversos artefatos para apoiar
 - [🎥 Vídeo](https://drive.google.com/file/d/19WEjt0IKTeJajN82UiRN8UGVSDA_Tzy2/view?usp=sharing)
 - [📩 Collection](collection.json)
 - [🧰 Script BD](docker/init.sql)
+- [☁️ SonarQube]([docker/init.sql](https://sonarcloud.io/project/overview?id=Lucas-lds_grupo34-gerador-thumbnail))
  
 ### 💻 Instalação
 
@@ -208,4 +209,10 @@ git clone https://github.com/Lucas-lds/grupo34-gerador-thumbnail.git
   - Passo 5: Para excluir toda a infraestrutura na AWS, execute:
     ```bash
     terraform destroy --auto-approve
-    ```   
+    ```
+
+    ### ☁️ SonarQube
+
+    - Cobertura de Testes com BDD:
+    - ![image](https://github.com/user-attachments/assets/246bdb9f-ad9b-400a-9fc2-1e00c277bc13)
+
